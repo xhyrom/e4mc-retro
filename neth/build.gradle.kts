@@ -16,11 +16,6 @@ repositories {
 }
 
 dependencies {
-    compileOnly("com.google.code.gson:gson:2.13.1")
-    compileOnly("org.apache.logging.log4j:log4j-api:2.25.0")  {
-        isTransitive = false
-    }
-
     implementation("io.netty:netty-all:4.1.122.Final")
     implementation("io.netty.incubator:netty-incubator-codec-native-quic:0.0.73.Final") {
         artifact {
