@@ -6,7 +6,7 @@
 **e4mc Retro** is a backport of [e4mc](https://modrinth.com/mod/e4mc) mod, allowing you to to open your Minecraft LAN world to anyone over the internet — even on older Minecraft versions.
 
 | Version  | e4mc Retro Forge | e4mc Retro Fabric | e4mc Forge | e4mc Fabric | e4mc Quilt  | e4mc NeoForge |
-|----------|:----------------:|-------------------|:----------:|:-----------:|:-----------:|:-------------:|
+|----------|:----------------:|:-----------------:|:----------:|:-----------:|:-----------:|:-------------:|
 | 1.2.5    |        ❌         |         ❌         |     ❌     |     ❌      |     ❌      |      ❌       |
 | 1.4.7    |        ❌         |         ❌         |     ❌     |     ❌      |     ❌      |      ❌       |
 | 1.6.4    |        ❌         |         ❌         |     ❌     |     ❌      |     ❌      |      ❌       |
