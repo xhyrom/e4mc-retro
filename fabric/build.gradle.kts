@@ -5,18 +5,21 @@ plugins {
     id("com.github.johnrengelman.shadow")
 }
 
-group = "dev.xhyrom.e4mc"
-version = "1.0.0+1.12.2"
-
+val archivesBaseName: String = property("archives_base_name") as String
 val minecraftVersion: String = property("minecraft_version") as String
 val yarnBuild: String = property("yarn_build") as String
 val loaderVersion: String = property("fabric_loader_version") as String
 val fabricVersion: String = property("fabric_version") as String
+val modVersion : String = property("mod_version") as String
 
-sourceSets["main"].resources.srcDirs(project(":common").sourceSets["main"].resources)
+base.archivesName = "${archivesBaseName}_${ext.get("platform")}"
 
 loom {}
 legacyLooming {}
+
+base {
+    archivesName.set("${base.archivesName.get()}-${modVersion}+${minecraftVersion}")
+}
 
 val shadowBundle: Configuration by configurations.creating
 
@@ -31,6 +34,12 @@ dependencies {
     shadowBundle(project(":common", configuration = "noRemap"))
 }
 
+sourceSets.main {
+    output.setResourcesDir(sourceSets.main.flatMap { it.java.classesDirectory })
+    resources {
+        srcDirs(project(":common").sourceSets["main"].resources)
+    }
+}
 tasks.shadowJar {
     configurations = listOf(shadowBundle)
     doLast {

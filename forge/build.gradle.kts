@@ -8,12 +8,13 @@ plugins {
     id("com.github.johnrengelman.shadow")
 }
 
-group = "dev.xhyrom.e4mc"
-version = "1.0.0+1.12.2"
-
+val archivesBaseName: String = property("archives_base_name") as String
 val minecraftVersion: String = property("minecraft_version") as String
 val forgeVersion: String = property("forge_version") as String
 val modId: String = property("mod_id") as String
+val modVersion: String = property("mod_version") as String
+
+base.archivesName = "${archivesBaseName}_${ext.get("platform")}"
 
 loom {
     log4jConfigs.from(file("log4j2.xml"))
@@ -64,6 +65,9 @@ dependencies {
 
 sourceSets.main {
     output.setResourcesDir(sourceSets.main.flatMap { it.java.classesDirectory })
+    resources {
+        srcDirs(project(":common").sourceSets["main"].resources)
+    }
 }
 
 tasks.withType(org.gradle.jvm.tasks.Jar::class) {
@@ -102,4 +106,8 @@ tasks.remapJar {
 
 tasks.build {
     dependsOn(tasks.remapJar)
+}
+
+tasks.jar {
+    archiveFileName = "${base.archivesName.get()}-${modVersion}+${minecraftVersion}.jar"
 }

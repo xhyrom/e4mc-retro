@@ -4,17 +4,16 @@ plugins {
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
 }
 
-val archivesBaseName: String = property("archives_base_name") as String
 val modId: String = property("mod_id") as String
 val modVersion: String = property("mod_version") as String
-val mavenGroup: String = property("maven_group") as String
 
-base.archivesName = archivesBaseName
 version = modVersion
-group = mavenGroup
+group = "link.e4mc"
 
 subprojects {
     apply(plugin = "java")
+
+    ext.set("platform", name)
 
     repositories {
         mavenCentral()

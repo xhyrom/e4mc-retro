@@ -25,8 +25,11 @@ plugins {
 
 rootProject.name = "e4mc-retro"
 
-include("neth")
-include("common")
-include("fabric")
-include("forge")
-//include("ornithe")
+sequenceOf(
+    "neth",
+    "common",
+    "fabric",
+    "forge"
+).forEach {
+    include(it)
+}

@@ -1,11 +1,6 @@
 package link.e4mc;
 
-import link.e4mc.command.CommandE4mc;
-import link.e4mc.platform.Services;
-import net.minecraft.command.server.CommandBanPlayer;
-import net.minecraft.command.server.CommandListBans;
-import net.minecraft.command.server.CommandPardonPlayer;
-import net.minecraft.command.server.CommandWhitelist;
+import net.minecraft.command.CommandBase;
 import net.minecraftforge.client.ClientCommandHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -18,13 +13,8 @@ public class E4mcClientForge {
 
     @Mod.EventHandler
     public void init(FMLInitializationEvent event) {
-        if (Services.AGNOS.isClient() && Config.INSTANCE.restoreDedicatedCommands.value()) {
-            ClientCommandHandler.instance.registerCommand(new CommandBanPlayer());
-            ClientCommandHandler.instance.registerCommand(new CommandListBans());
-            ClientCommandHandler.instance.registerCommand(new CommandPardonPlayer());
-            ClientCommandHandler.instance.registerCommand(new CommandWhitelist());
+        for (CommandBase command : E4mcClient.commands()) {
+            ClientCommandHandler.instance.registerCommand(command);
         }
-
-        ClientCommandHandler.instance.registerCommand(new CommandE4mc());
     }
 }
