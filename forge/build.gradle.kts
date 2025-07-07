@@ -7,13 +7,11 @@ plugins {
     id("com.github.johnrengelman.shadow")
 }
 
-val archivesBaseName: String = property("archives_base_name") as String
+val modId: String = property("mod_id") as String
 val minecraftVersion: String = property("minecraft_version") as String
 val forgeVersion: String = property("forge_version") as String
-val modId: String = property("mod_id") as String
-val modVersion: String = property("mod_version") as String
 
-base.archivesName = "${archivesBaseName}_${ext.get("platform")}"
+val shadowBundle: Configuration by configurations.creating
 
 loom {
     log4jConfigs.from(file("log4j2.xml"))
@@ -32,15 +30,13 @@ loom {
 
     forge {
         pack200Provider.set(dev.architectury.pack200.java.Pack200Adapter())
-        mixinConfig("mixins.${modId}.json")
+        mixinConfig("${modId}.mixins.json")
     }
 
     mixin {
-        defaultRefmapName.set("forge-refmap.json")
+        defaultRefmapName.set("${modId}.refmap.json")
     }
 }
-
-val shadowBundle: Configuration by configurations.creating
 
 dependencies {
     minecraft("com.mojang:minecraft:${minecraftVersion}")
@@ -62,46 +58,21 @@ dependencies {
     annotationProcessor("com.google.code.gson:gson:2.8.9")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT")
 }
-
-sourceSets.main {
-    output.setResourcesDir(sourceSets.main.flatMap { it.java.classesDirectory })
-    resources {
-        srcDirs(project(":common").sourceSets["main"].resources)
-    }
-}
-
 tasks.withType(org.gradle.jvm.tasks.Jar::class) {
     archiveBaseName.set(modId)
     manifest.attributes.run {
         this["FMLCorePluginContainsFMLMod"] = "true"
         this["ForceLoadAsMod"] = "true"
         this["TweakClass"] = "org.spongepowered.asm.launch.MixinTweaker"
-        this["MixinConfigs"] = "mixins.${modId}.json"
+        this["MixinConfigs"] = "${modId}.mixins.json"
     }
-}
-
-tasks.shadowJar {
-    configurations = listOf(shadowBundle)
-    doLast {
-        configurations.forEach {
-            println("Copying dependencies into mod: ${it.files}")
-        }
-    }
-
-    exclude("META-INF/maven/**")
-    exclude("META-INF/native-image/**")
-    exclude("META-INF/io.netty.versions*")
-    exclude("META-INF/services/reactor*")
-
-    relocate("com.electronwill.nightconfig", "link.e4mc.shadow.nightconfig")
-    relocate("folk.sisby.kaleido", "link.e4mc.shadow.kaleido")
 }
 
 tasks.remapJar {
     dependsOn(tasks.shadowJar)
     input.set(tasks.shadowJar.get().archiveFile)
 
-    archiveFileName = "${base.archivesName.get()}-${modVersion}+${minecraftVersion}.jar"
+    archiveFileName = "${base.archivesName.get()}.jar"
 }
 
 tasks.build {
