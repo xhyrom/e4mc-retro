@@ -1,0 +1,29 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "e4mc Retro",
+  "description": "Open a LAN server to anyone, anywhere, anytime.",
+  "authors": [
+    "skyevg", "xhyrom"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/mod/e4mc-retro",
+    "sources": "https://github.com/xhyrom/e4mc-retro"
+  },
+  "license": "Apache-2.0",
+  "icon": "assets/${mod_id}/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "link.e4mc.E4mcClientOrnithe"
+    ]
+  },
+  "mixins": [
+    "e4mc_retro_minecraft.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.14.19",
+    "minecraft": "~1.12.2"
+  }
+}

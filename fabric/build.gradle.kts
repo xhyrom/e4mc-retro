@@ -1,7 +1,7 @@
 plugins {
     idea
-    id("fabric-loom") version "1.8-SNAPSHOT"
-    id("legacy-looming") version "1.8-SNAPSHOT"
+    id("gg.essential.loom")
+    id("legacy-looming") version "1.9-SNAPSHOT"
     id("com.github.johnrengelman.shadow")
 }
 
@@ -13,9 +13,6 @@ val fabricVersion: String = property("fabric_version") as String
 val modVersion : String = property("mod_version") as String
 
 base.archivesName = "${archivesBaseName}_${ext.get("platform")}"
-
-loom {}
-legacyLooming {}
 
 base {
     archivesName.set("${base.archivesName.get()}-${modVersion}+${minecraftVersion}")
@@ -40,6 +37,7 @@ sourceSets.main {
         srcDirs(project(":common").sourceSets["main"].resources)
     }
 }
+
 tasks.shadowJar {
     configurations = listOf(shadowBundle)
     doLast {

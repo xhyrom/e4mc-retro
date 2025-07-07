@@ -1,6 +1,7 @@
 plugins {
     id("java")
     id("idea")
+    id("gg.essential.loom") version "1.9.31" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
 }
 
@@ -13,6 +14,9 @@ group = "link.e4mc"
 subprojects {
     apply(plugin = "java")
 
+    project.version = rootProject.version
+    project.group = rootProject.group
+
     ext.set("platform", name)
 
     repositories {
@@ -23,7 +27,7 @@ subprojects {
     }
 
     tasks.processResources {
-        inputs.property("version", project.version)
+        inputs.property("version", modVersion)
         inputs.property("mod_id", modId)
 
         filesMatching(listOf("mcmod.info", "fabric.mod.json", "mixins.${modId}.json")) {

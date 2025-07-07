@@ -9,6 +9,8 @@ pluginManagement {
         maven("https://maven.minecraftforge.net/")
         maven("https://repo.spongepowered.org/maven/")
         maven("https://repo.essential.gg/repository/maven-releases/")
+        maven("https://maven.ornithemc.net/releases")
+        maven("https://maven.ornithemc.net/snapshots")
     }
     resolutionStrategy {
         eachPlugin {
@@ -29,7 +31,8 @@ sequenceOf(
     "neth",
     "common",
     "fabric",
-    "forge"
+    "forge",
+    "ornithe"
 ).forEach {
     include(it)
 }

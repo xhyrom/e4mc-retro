@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "link.e4mc.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "refmap": "common-refmap.json",
+  "mixins": [
+    "CommandBanPlayerMixin",
+    "CommandListBansMixin",
+    "CommandPardonPlayerMixin",
+    "NetworkSystemMixin"
+  ],
+  "client": [
+    "PlayerListMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

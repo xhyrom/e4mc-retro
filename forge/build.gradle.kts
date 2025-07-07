@@ -3,8 +3,7 @@ import org.apache.commons.lang3.SystemUtils
 plugins {
     idea
     java
-    id("gg.essential.loom") version "0.10.0.+"
-    id("dev.architectury.architectury-pack200") version "0.1.3"
+    id("gg.essential.loom")
     id("com.github.johnrengelman.shadow")
 }
 
@@ -18,15 +17,12 @@ base.archivesName = "${archivesBaseName}_${ext.get("platform")}"
 
 loom {
     log4jConfigs.from(file("log4j2.xml"))
-    launchConfigs {
-        "client" {
-            property("mixin.debug", "true")
-            arg("--tweakClass", "org.spongepowered.asm.launch.MixinTweaker")
-        }
-    }
 
     runConfigs {
         "client" {
+            property("mixin.debug", "true")
+            vmArg("--tweakClass=org.spongepowered.asm.launch.MixinTweaker")
+
             if (SystemUtils.IS_OS_MAC_OSX) {
                 vmArgs.remove("-XstartOnFirstThread")
             }
@@ -60,6 +56,10 @@ dependencies {
     shadowBundle("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
         isTransitive = false
     }
+
+    annotationProcessor("org.ow2.asm:asm-debug-all:5.2")
+    annotationProcessor("com.google.guava:guava:32.1.2-jre")
+    annotationProcessor("com.google.code.gson:gson:2.8.9")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT")
 }
 
@@ -75,8 +75,6 @@ tasks.withType(org.gradle.jvm.tasks.Jar::class) {
     manifest.attributes.run {
         this["FMLCorePluginContainsFMLMod"] = "true"
         this["ForceLoadAsMod"] = "true"
-
-        // If you don't want mixins, remove these lines
         this["TweakClass"] = "org.spongepowered.asm.launch.MixinTweaker"
         this["MixinConfigs"] = "mixins.${modId}.json"
     }
@@ -102,12 +100,10 @@ tasks.shadowJar {
 tasks.remapJar {
     dependsOn(tasks.shadowJar)
     input.set(tasks.shadowJar.get().archiveFile)
+
+    archiveFileName = "${base.archivesName.get()}-${modVersion}+${minecraftVersion}.jar"
 }
 
 tasks.build {
     dependsOn(tasks.remapJar)
-}
-
-tasks.jar {
-    archiveFileName = "${base.archivesName.get()}-${modVersion}+${minecraftVersion}.jar"
 }
