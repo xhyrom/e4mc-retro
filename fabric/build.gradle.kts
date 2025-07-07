@@ -13,6 +13,8 @@ val yarnBuild: String = property("yarn_build") as String
 val loaderVersion: String = property("fabric_loader_version") as String
 val fabricVersion: String = property("fabric_version") as String
 
+sourceSets["main"].resources.srcDirs(project(":common").sourceSets["main"].resources)
+
 loom {}
 legacyLooming {}
 
