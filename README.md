@@ -3,7 +3,7 @@
 </h1>
 
 
-**e4mc Retro** is a backport of [e4mc](https://modrinth.com/mod/e4mc) mod, allowing you to to open your Minecraft LAN world to anyone over the internet — even on older Minecraft versions.
+**e4mc Retro** is a backport of [e4mc](https://modrinth.com/mod/e4mc) mod, allowing you to open your Minecraft LAN world to anyone over the internet — even on older Minecraft versions.
 
 | Version  |          e4mc Retro Forge           |                       e4mc                        |
 |----------|:-----------------------------------:|:-------------------------------------------------:|
