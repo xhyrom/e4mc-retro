@@ -3,6 +3,7 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 plugins {
     id("java")
     id("idea")
+    id("me.modmuss50.mod-publish-plugin") version "0.8.4"
     id("gg.essential.loom") version "1.9.31" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
 }
@@ -17,6 +18,7 @@ group = "link.e4mc"
 
 subprojects {
     apply(plugin = "java")
+    apply(plugin = "me.modmuss50.mod-publish-plugin")
     apply(plugin = "com.github.johnrengelman.shadow")
 
     project.version = rootProject.version
@@ -91,5 +93,103 @@ subprojects {
         targetCompatibility = JavaVersion.VERSION_1_8
 
         toolchain.languageVersion = JavaLanguageVersion.of(8)
+    }
+}
+
+publishMods {
+    type = STABLE
+    changelog = getLatestChangelog()
+
+    val versions = listOf(
+        "1.9",
+        "1.9.1",
+        "1.9.2",
+        "1.9.3",
+        "1.9.4",
+        "1.10",
+        "1.10.1",
+        "1.10.2",
+        "1.11",
+        "1.11.1",
+        "1.11.2",
+        "1.12",
+        "1.12.1",
+        "1.12.2"
+    )
+
+    val curseforgeToken = providers.gradleProperty("curseforge.token")
+        .orElse(providers.environmentVariable("CURSEFORGE_TOKEN"))
+
+    val modrinthToken = providers.gradleProperty("modrinth.token")
+        .orElse(providers.environmentVariable("MODRINTH_TOKEN"))
+
+    val cfOptions = curseforgeOptions {
+        accessToken.set(curseforgeToken)
+        projectId.set("1302894")
+        minecraftVersions.addAll(versions)
+    }
+
+    val mrOptions = modrinthOptions {
+        accessToken.set(modrinthToken)
+        projectId.set("L6TtRc14")
+        minecraftVersions.addAll(versions)
+    }
+
+    curseforge("curseforgeForge") {
+        from(cfOptions)
+        file(project(":forge"))
+        modLoaders.add("forge")
+    }
+
+    modrinth("modrinthFabric") {
+        from(mrOptions)
+        file(project(":fabric"))
+        modLoaders.add("fabric")
+        modLoaders.add("legacy-fabric")
+        requires {
+            slug = "fabric-api"
+        }
+    }
+
+    modrinth("modrinthOrnithe") {
+        from(mrOptions)
+        file(project(":ornithe"))
+        modLoaders.add("ornithe")
+        requires {
+            slug = "osl"
+        }
+    }
+
+    modrinth("modrinthForge") {
+        from(mrOptions)
+        file(project(":forge"))
+        modLoaders.add("forge")
+    }
+}
+
+fun getLatestChangelog(): String {
+    val lines = rootProject.rootDir.resolve("CHANGELOG.md").readLines()
+    val changelogLines = mutableListOf<String>()
+    var inSegment = false
+
+    for (line in lines) {
+        if (line.startsWith("## ")) {
+            if (inSegment) break  // next segment started, stop reading
+            inSegment = true
+        }
+        if (inSegment) {
+            changelogLines += line
+        }
+    }
+
+    return changelogLines.joinToString("\n").trim()
+}
+
+tasks.register("viewLatestChangelog") {
+    group = "documentation"
+    description = "Print the topmost single version section from the full CHANGELOG.md file."
+
+    doLast {
+        println(getLatestChangelog())
     }
 }
