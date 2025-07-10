@@ -7,8 +7,8 @@ import net.minecraft.command.server.CommandBanPlayer;
 import net.minecraft.command.server.CommandListBans;
 import net.minecraft.command.server.CommandPardonPlayer;
 import net.minecraft.command.server.CommandWhitelist;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.tinylog.Logger;
+import org.tinylog.TaggedLogger;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -19,7 +19,7 @@ public class E4mcClient {
 
     public static QuiclimeSession session;
     public static int localRelayPort;
-    public static final Logger LOGGER = LogManager.getLogger(E4mcClient.MOD_ID);
+    public static final TaggedLogger LOGGER = Logger.tag(MOD_ID);
 
     public static void init() {
         Config.INSTANCE.id();

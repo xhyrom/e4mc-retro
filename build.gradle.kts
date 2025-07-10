@@ -8,7 +8,7 @@ plugins {
 }
 
 val baseName: String = property("archives_base_name") as String
-val minecraftVersion: String = property("minecraft_version") as String
+val supportedMinecraftVersions: String = property("supported_minecraft_versions") as String
 val modId: String = property("mod_id") as String
 val modVersion: String = property("mod_version") as String
 
@@ -30,7 +30,7 @@ subprojects {
     }
 
     base {
-        archivesName.set("${baseName}_${name}-${modVersion}+${minecraftVersion}")
+        archivesName.set("${baseName}_${name}-${modVersion}+${supportedMinecraftVersions}")
     }
 
     tasks.processResources {
@@ -74,8 +74,11 @@ subprojects {
             exclude("META-INF/io.netty.versions*")
             exclude("META-INF/services/reactor*")
 
+            relocate("org.tinylog", "link.e4mc.shadow.tinylog")
             relocate("com.electronwill.nightconfig", "link.e4mc.shadow.nightconfig")
             relocate("folk.sisby.kaleido", "link.e4mc.shadow.kaleido")
+
+            mergeServiceFiles()
         }
     }
 

@@ -2,7 +2,6 @@
   <img src=".github/logo.png" alt="e4mc thumbnail" width="300">
 </h1>
 
-
 **e4mc Retro** is a backport of [e4mc](https://modrinth.com/mod/e4mc) mod, allowing you to open your Minecraft LAN world to anyone over the internet — even on older Minecraft versions.
 
 ## What is e4mc?
@@ -15,18 +14,25 @@ Simply install the mod, and Open to LAN as normal. A public domain will appear a
 
 ## Version Support
 
-| Version  |          e4mc Retro Forge           |                       e4mc                        |
-|----------|:-----------------------------------:|:-------------------------------------------------:|
-| 1.2.5    |                  ❌                  |                         ❌                         |
-| 1.4.7    |                  ❌                  |                         ❌                         |
-| 1.6.4    |                  ❌                  |                         ❌                         |
-| 1.7.10   |                  ⌛                  |                         ❌                         |
-| 1.12.2   | ✅ *(Forge, Legacy Fabric, Ornithe)* |                         ❌                         |
-| 1.14.4   |                  ⌛                  |                         ❌                         |
-| 1.15.2   |                  ⌛                  |                         ❌                         |
-| 1.16.5   |                  ⌛                  |                         ❌                         |
-| 1.17.x   |                  ❌                  |            ✅ *(Forge, Fabric, Quilt)*             |
-| 1.18.x   |                  ❌                  |            ✅ *(Forge, Fabric, Quilt)*             |
-| 1.19.x   |                  ❌                  |            ✅ *(Forge, Fabric, Quilt)*             |
-| 1.20.x   |                  ❌                  |            ✅ *(Forge, Fabric, Quilt)*             |
-| 1.21.x   |                  ❌                  |            ✅ *(Forge, Fabric, Quilt)*             |
+| Version |           e4mc Retro Forge           |            e4mc             |
+| ------- | :----------------------------------: | :-------------------------: |
+| 1.2.x   |                  ❌                  |             ❌              |
+| 1.3.x   |                  ❌                  |             ❌              |
+| 1.4.x   |                  ❌                  |             ❌              |
+| 1.5.x   |                  ❌                  |             ❌              |
+| 1.6.x   |                  ❌                  |             ❌              |
+| 1.7.x   |                  ⌛                  |             ❌              |
+| 1.8.x   |                  ❌                  |             ❌              |
+| 1.9.x   | ✅ _(Forge, Legacy Fabric, Ornithe)_ |             ❌              |
+| 1.10.x  | ✅ _(Forge, Legacy Fabric, Ornithe)_ |             ❌              |
+| 1.11.x  | ✅ _(Forge, Legacy Fabric, Ornithe)_ |             ❌              |
+| 1.12.x  | ✅ _(Forge, Legacy Fabric, Ornithe)_ |             ❌              |
+| 1.13.x  |                  ⌛                  |             ❌              |
+| 1.14.x  |                  ⌛                  |             ❌              |
+| 1.15.x  |                  ⌛                  |             ❌              |
+| 1.16.x  |                  ⌛                  |             ❌              |
+| 1.17.x  |                  ❌                  | ✅ _(Forge, Fabric, Quilt)_ |
+| 1.18.x  |                  ❌                  | ✅ _(Forge, Fabric, Quilt)_ |
+| 1.19.x  |                  ❌                  | ✅ _(Forge, Fabric, Quilt)_ |
+| 1.20.x  |                  ❌                  | ✅ _(Forge, Fabric, Quilt)_ |
+| 1.21.x  |                  ❌                  | ✅ _(Forge, Fabric, Quilt)_ |
