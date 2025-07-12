@@ -8,6 +8,7 @@
     "CommandBanPlayerMixin",
     "CommandListBansMixin",
     "CommandPardonPlayerMixin",
+    "CommandWhitelistMixin",
     "NetworkSystemMixin",
     "WorldClientMixin"
   ],
