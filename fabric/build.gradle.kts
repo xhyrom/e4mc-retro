@@ -6,7 +6,9 @@ plugins {
 }
 
 val modId: String = property("mod_id") as String
+val modVersion: String = property("mod_version") as String
 val minecraftVersion: String = property("minecraft_version") as String
+val supportedMinecraftVersions: String = property("supported_minecraft_versions") as String
 val yarnBuild: String = property("yarn_build") as String
 val loaderVersion: String = property("fabric_loader_version") as String
 val fabricVersion: String = property("fabric_version") as String
@@ -39,4 +41,9 @@ tasks.remapJar {
 
 tasks.build {
     dependsOn(tasks.remapJar)
+}
+
+publishMods {
+    file = tasks.remapJar.get().archiveFile
+    displayName = "e4mc Retro ${project.name} ${modVersion}+${supportedMinecraftVersions}"
 }

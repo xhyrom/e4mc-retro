@@ -25,6 +25,8 @@
   "depends": {
     "fabricloader": ">=0.14.19",
     "legacy-fabric-api": "*",
-    "minecraft": "~1.8.9"
+    "minecraft": [
+      "1.8.9"
+    ]
   }
 }

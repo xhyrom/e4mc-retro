@@ -8,7 +8,9 @@
     "CommandBanPlayerMixin",
     "CommandListBansMixin",
     "CommandPardonPlayerMixin",
-    "NetworkSystemMixin"
+    "CommandWhitelistMixin",
+    "NetworkSystemMixin",
+    "WorldClientMixin"
   ],
   "client": [],
   "injectors": {
