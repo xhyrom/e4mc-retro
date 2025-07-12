@@ -40,7 +40,7 @@ loom {
 
 dependencies {
     minecraft("com.mojang:minecraft:${minecraftVersion}")
-    mappings("de.oceanlabs.mcp:mcp_stable:39-1.12")
+    mappings("de.oceanlabs.mcp:mcp_stable:22-1.8.9")
     forge("net.minecraftforge:forge:${forgeVersion}")
 
     implementation(project(":common", configuration = "noRemap"))

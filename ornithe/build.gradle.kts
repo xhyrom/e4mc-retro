@@ -9,8 +9,6 @@ val modId: String = property("mod_id") as String
 val minecraftVersion: String = property("minecraft_version") as String
 val loaderVersion: String = property("fabric_loader_version") as String
 val oslVersion: String = property("ornithe_osl_version") as String
-val ravenBuild: String = property("ornithe_raven_build") as String
-val sparrowBuild: String = property("ornithe_sparrow_build") as String
 
 val shadowBundle: Configuration by configurations.creating
 
@@ -22,9 +20,7 @@ loom {
 
 dependencies {
     minecraft("com.mojang:minecraft:${minecraftVersion}")
-    mappings(ploceus.mcpMappings("stable", "1.12", "39"))
-    exceptions(ploceus.raven(ravenBuild))
-    signatures(ploceus.sparrow(sparrowBuild))
+    mappings(ploceus.mcpMappings("stable", "1.8.9", "22"))
 
     modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
 

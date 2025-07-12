@@ -6,41 +6,40 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.text.TextComponentTranslation;
+import net.minecraft.util.ChatComponentTranslation;
 
 public class CommandE4mc extends CommandBase {
     @Override
-    public String getName() {
+    public String getCommandName() {
         return "e4mc";
     }
 
     @Override
-    public String getUsage(ICommandSender sender) {
+    public String getCommandUsage(ICommandSender sender) {
         return "commands.e4mc.usage";
     }
 
     @Override
-    public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        return server.getServerOwner().equals(sender.getName());
+    public boolean canCommandSenderUseCommand(ICommandSender sender) {
+        return true;//server.getServerOwner().equals(sender.getName());
     }
 
     @Override
-    public void execute(MinecraftServer server, ICommandSender sender, String[] args) throws CommandException {
+    public void processCommand(ICommandSender sender, String[] args) throws CommandException {
         if (args.length == 0) {
             throw new CommandException("commands.e4mc.usage");
         }
 
         switch (args[0]) {
             case "offline":
-                Minecraft.getMinecraft().getIntegratedServer().setOnlineMode(false);
+                Minecraft.getMinecraft().getIntegratedServer().method_3022(false);
                 break;
             case "stop":
                 if ((E4mcClient.session != null) && (E4mcClient.session.state != QuiclimeSession.State.STOPPED)) {
                     E4mcClient.session.stop();
-                    sender.sendMessage(new TextComponentTranslation("text.e4mc_minecraft.closeServer"));
+                    sender.addChatMessage(new ChatComponentTranslation("text.e4mc_minecraft.closeServer"));
                 } else {
-                    sender.sendMessage(new TextComponentTranslation( "text.e4mc_minecraft.serverAlreadyClosed"));
+                    sender.addChatMessage(new ChatComponentTranslation( "text.e4mc_minecraft.serverAlreadyClosed"));
                 }
                 break;
             case "restart":
@@ -49,7 +48,7 @@ public class CommandE4mc extends CommandBase {
                     E4mcClient.session = new QuiclimeSession();
                     E4mcClient.session.startAsync();
                 } else {
-                    sender.sendMessage(new TextComponentTranslation("text.e4mc_minecraft.serverAlreadyClosed"));
+                    sender.addChatMessage(new ChatComponentTranslation("text.e4mc_minecraft.serverAlreadyClosed"));
                 }
                 break;
             default:

@@ -10,9 +10,7 @@
     "CommandPardonPlayerMixin",
     "NetworkSystemMixin"
   ],
-  "client": [
-    "PlayerListMixin"
-  ],
+  "client": [],
   "injectors": {
     "defaultRequire": 1
   }
