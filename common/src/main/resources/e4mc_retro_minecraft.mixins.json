@@ -9,7 +9,7 @@
     "CommandListBansMixin",
     "CommandPardonPlayerMixin",
     "NetworkSystemMixin",
-    "EntityPlayerMixin"
+    "WorldClientMixin"
   ],
   "client": [
     "PlayerListMixin"
