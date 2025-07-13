@@ -38,6 +38,10 @@ loom {
     }
 }
 
+repositories {
+    maven("https://maven.legacyfabric.net/")
+}
+
 dependencies {
     minecraft("com.mojang:minecraft:${minecraftVersion}")
     mappings("de.oceanlabs.mcp:mcp_stable:22-1.8.9")

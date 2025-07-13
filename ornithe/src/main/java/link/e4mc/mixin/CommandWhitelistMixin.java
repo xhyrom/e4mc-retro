@@ -9,11 +9,11 @@ import org.spongepowered.asm.mixin.Mixin;
 @Mixin(CommandWhitelist.class)
 public abstract class CommandWhitelistMixin extends CommandBase {
     @Override
-    public boolean checkPermission(MinecraftServer server, ICommandSender sender) {
-        if (sender.getName().equals(server.getServerOwner())) {
+    public boolean canCommandSenderUseCommand(ICommandSender sender) {
+        if (sender.getName().equals(MinecraftServer.getServer().getServerOwner())) {
             return true;
         }
 
-        return super.checkPermission(server, sender);
+        return super.canCommandSenderUseCommand(sender);
     }
 }

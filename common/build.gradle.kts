@@ -4,9 +4,6 @@ plugins {
     id("com.github.johnrengelman.shadow")
 }
 
-group = "dev.xhyrom.e4mc"
-version = "1.0.0+1.12.2"
-
 val minecraftVersion: String = property("minecraft_version") as String
 val yarnBuild: String = property("yarn_build") as String
 val loaderVersion: String = property("fabric_loader_version") as String
@@ -20,7 +17,10 @@ repositories {
 
 dependencies {
     minecraft("com.mojang:minecraft:${minecraftVersion}")
-    mappings(project.dependencies.create("net.legacyfabric:yarn:${minecraftVersion}+build.${yarnBuild}:v2"))
+    mappings(loom.layered {
+        mappings(project.dependencies.create("net.legacyfabric:yarn:${minecraftVersion}+build.${yarnBuild}:v2"))
+        mappings(file("override.tiny"))
+    })
 
     modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
 
@@ -41,6 +41,7 @@ dependencies {
 tasks.shadowJar {
     configurations = listOf(shadowBundle)
     archiveClassifier = "no-remap"
+    archiveFileName = "${base.archivesName.get()}-${archiveClassifier.get()}.jar"
 }
 
 artifacts {

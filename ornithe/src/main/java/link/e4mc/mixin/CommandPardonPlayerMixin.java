@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class CommandPardonPlayerMixin {
     @Inject(method = "canCommandSenderUseCommand", at = @At("HEAD"), cancellable = true)
     public void onCheckPermission(ICommandSender sender, CallbackInfoReturnable<Boolean> cir) {
-        if (sender.getName().equals(MinecraftServer.method_2970().method_2028())) {
+        if (sender.getName().equals(MinecraftServer.getServer().getServerOwner())) {
             cir.setReturnValue(true);
             cir.cancel();
         }

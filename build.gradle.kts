@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.gradle.kotlin.dsl.exclude
 
 plugins {
     id("java")
@@ -72,6 +73,7 @@ subprojects {
             }
 
             exclude("META-INF/maven/**")
+            exclude("META-INF/versions/**")
             exclude("META-INF/native-image/**")
             exclude("META-INF/io.netty.versions*")
             exclude("META-INF/services/reactor*")

@@ -6,6 +6,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentTranslation;
 
 public class CommandE4mc extends CommandBase {
@@ -21,7 +22,7 @@ public class CommandE4mc extends CommandBase {
 
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender sender) {
-        return true;//server.getServerOwner().equals(sender.getName());
+        return MinecraftServer.getServer().getServerOwner().equals(sender.getName());
     }
 
     @Override

@@ -1,3 +1,5 @@
+import okio.Path.Companion.toPath
+
 plugins {
     idea
     id("gg.essential.loom")
@@ -21,9 +23,19 @@ loom {
     }
 }
 
+
+val overrideFile = project.provider {
+    val commonProj = project(":common")
+    commonProj.projectDir.resolve("override.tiny")
+}
+
 dependencies {
     minecraft("com.mojang:minecraft:${minecraftVersion}")
-    mappings(legacy.yarn(minecraftVersion, yarnBuild))
+    mappings(loom.layered {
+        mappings(project.dependencies.create("net.legacyfabric:yarn:${minecraftVersion}+build.${yarnBuild}:v2"))
+        mappings(overrideFile.get())
+    })
+
     modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
 
     modImplementation("net.legacyfabric.legacy-fabric-api:legacy-fabric-api:${fabricVersion}")
