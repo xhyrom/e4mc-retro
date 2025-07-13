@@ -8,16 +8,9 @@ pluginManagement {
         maven("https://maven.legacyfabric.net/")
         maven("https://maven.minecraftforge.net/")
         maven("https://repo.spongepowered.org/maven/")
-        maven("https://repo.essential.gg/repository/maven-releases/")
+        maven("https://maven.crystaelix.com/releases/")
         maven("https://maven.ornithemc.net/releases")
         maven("https://maven.ornithemc.net/snapshots")
-    }
-    resolutionStrategy {
-        eachPlugin {
-            when (requested.id.id) {
-                "gg.essential.loom" -> useModule("gg.essential:architectury-loom:${requested.version}")
-            }
-        }
     }
 }
 

@@ -22,7 +22,7 @@ public class CommandE4mc extends CommandBase {
 
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender sender) {
-        return MinecraftServer.getServer().getServerOwner().equals(sender.getName());
+        return MinecraftServer.getServer().getServerOwner().equals(sender.method_2518());
     }
 
     @Override

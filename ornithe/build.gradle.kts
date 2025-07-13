@@ -1,7 +1,7 @@
 plugins {
     idea
-    id("gg.essential.loom")
-    id("ploceus") version "1.9-SNAPSHOT"
+    id("com.crystaelix.loom")
+    id("ploceus") version "1.10-SNAPSHOT"
     id("com.github.johnrengelman.shadow")
 }
 
@@ -22,7 +22,7 @@ loom {
 
 dependencies {
     minecraft("com.mojang:minecraft:${minecraftVersion}")
-    mappings(ploceus.mcpMappings("stable", "1.8.9", "22"))
+    mappings(ploceus.mcpMappings("stable", "1.7.10", "12"))
 
     modImplementation("net.fabricmc:fabric-loader:${loaderVersion}")
 

@@ -1,7 +1,7 @@
 plugins {
     idea
-    id("gg.essential.loom")
-    id("legacy-looming") version "1.9-SNAPSHOT"
+    id("com.crystaelix.loom")
+    id("legacy-looming") version "1.10-SNAPSHOT"
     id("com.github.johnrengelman.shadow")
 }
 

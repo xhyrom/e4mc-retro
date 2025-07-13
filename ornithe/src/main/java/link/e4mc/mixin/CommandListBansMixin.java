@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 public class CommandListBansMixin {
     @Inject(method = "canCommandSenderUseCommand", at = @At("HEAD"), cancellable = true)
     public void onCheckPermission(ICommandSender sender, CallbackInfoReturnable<Boolean> cir) {
-        if (sender.getName().equals(MinecraftServer.getServer().getServerOwner())) {
+        if (sender.getCommandSenderName().equals(MinecraftServer.getServer().getServerOwner())) {
             cir.setReturnValue(true);
             cir.cancel();
         }

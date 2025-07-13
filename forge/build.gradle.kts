@@ -3,7 +3,7 @@ import org.apache.commons.lang3.SystemUtils
 plugins {
     idea
     java
-    id("gg.essential.loom")
+    id("com.crystaelix.loom")
     id("com.github.johnrengelman.shadow")
 }
 
@@ -28,48 +28,50 @@ loom {
         remove(getByName("server"))
     }
 
-    forge {
-        pack200Provider.set(dev.architectury.pack200.java.Pack200Adapter())
+    legacyForge {
+        //pack200Provider.set(dev.architectury.pack200.java.Pack200Adapter())
         mixinConfig("${modId}.mixins.json")
     }
 
     mixin {
         defaultRefmapName.set("${modId}.refmap.json")
     }
+
+    generatedIntermediateMappings()
+}
+
+sourceSets {
+    main {
+        output.setResourcesDir(layout.buildDirectory.dir("outputs/main"))
+        java.destinationDirectory.set(layout.buildDirectory.dir("outputs/main"))
+    }
 }
 
 repositories {
-    maven("https://maven.legacyfabric.net/")
+    maven("https://jitpack.io")
+    maven("https://maven.crystaelix.com/releases/")
 }
 
 dependencies {
     minecraft("com.mojang:minecraft:${minecraftVersion}")
-    mappings("de.oceanlabs.mcp:mcp_stable:22-1.8.9")
-    forge("net.minecraftforge:forge:${forgeVersion}")
+    mappings("net.minecraftforge:forge:${forgeVersion}:userdev")
+    legacyForge("net.minecraftforge:forge:${forgeVersion}:universal")
 
     implementation(project(":common", configuration = "noRemap"))
     shadowBundle(project(":common", configuration = "noRemap"))
 
-    implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+    implementation("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.20") {
         isTransitive = false
     }
-    shadowBundle("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+    annotationProcessor("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.20") {
         isTransitive = false
     }
+    implementation("com.crystaelix:mixinconbooter-legacy:1.0")
 
     annotationProcessor("org.ow2.asm:asm-debug-all:5.2")
     annotationProcessor("com.google.guava:guava:32.1.2-jre")
     annotationProcessor("com.google.code.gson:gson:2.8.9")
     annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT")
-}
-tasks.withType(org.gradle.jvm.tasks.Jar::class) {
-    archiveBaseName.set(modId)
-    manifest.attributes.run {
-        this["FMLCorePluginContainsFMLMod"] = "true"
-        this["ForceLoadAsMod"] = "true"
-        this["TweakClass"] = "org.spongepowered.asm.launch.MixinTweaker"
-        this["MixinConfigs"] = "${modId}.mixins.json"
-    }
 }
 
 tasks.remapJar {

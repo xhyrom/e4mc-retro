@@ -2,3 +2,14 @@ tiny	2	0	intermediary	named
 c	net/minecraft/server/MinecraftServer	net/minecraft/server/MinecraftServer
 	m	()Ljava/lang/String;	method_2974	getServerOwner
 	m	()Lnet/minecraft/server/MinecraftServer;	method_2970	getServer
+c	net/minecraft/class_1007	net/minecraft/command/Command
+	m	()Ljava/lang/String;	method_3277	getCommandName
+	m	(Lnet/minecraft/class_1061;)Ljava/lang/String;	method_3275	getCommandUsage
+		p	1		source
+    m	(Lnet/minecraft/class_1061;)Z	method_3278	canCommandSenderUseCommand
+        p	1		source
+	m	(Lnet/minecraft/class_1061;[Ljava/lang/String;)V	method_3279	processCommand
+		p	1		source
+		p	2		args
+c	net/minecraft/class_55	net/minecraft/command/CommandException
+c	net/minecraft/class_1061	net/minecraft/command/ICommandSender

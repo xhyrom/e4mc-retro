@@ -4,7 +4,7 @@ plugins {
     id("java")
     id("idea")
     id("me.modmuss50.mod-publish-plugin") version "0.8.4"
-    id("gg.essential.loom") version "1.9.31" apply false
+    id("com.crystaelix.loom") version "1.10.0" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
 }
 
@@ -132,11 +132,11 @@ publishMods {
         minecraftVersions.addAll(versions)
     }
 
-    curseforge("curseforgeForge") {
+    /*curseforge("curseforgeForge") {
         from(cfOptions)
         file(project(":forge"))
         modLoaders.add("forge")
-    }
+    }*/
 
     modrinth("modrinthFabric") {
         from(mrOptions)
@@ -157,11 +157,11 @@ publishMods {
         }
     }
 
-    modrinth("modrinthForge") {
+    /*modrinth("modrinthForge") {
         from(mrOptions)
         file(project(":forge"))
         modLoaders.add("forge")
-    }
+    }*/
 }
 
 fun getLatestChangelog(): String {

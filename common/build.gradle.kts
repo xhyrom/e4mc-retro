@@ -1,6 +1,6 @@
 plugins {
     idea
-    id("gg.essential.loom")
+    id("com.crystaelix.loom")
     id("com.github.johnrengelman.shadow")
 }
 

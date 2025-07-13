@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.Mixin;
 public abstract class CommandWhitelistMixin extends CommandBase {
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender sender) {
-        if (sender.getName().equals(MinecraftServer.getServer().getServerOwner())) {
+        if (sender.getCommandSenderName().equals(MinecraftServer.getServer().getServerOwner())) {
             return true;
         }
 
