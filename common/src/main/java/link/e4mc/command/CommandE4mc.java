@@ -33,7 +33,7 @@ public class CommandE4mc extends CommandBase {
 
         switch (args[0]) {
             case "offline":
-                Minecraft.getMinecraft().getIntegratedServer().method_3022(false);
+                Minecraft.getMinecraft().getIntegratedServer().setOnlineMode(false);
                 break;
             case "stop":
                 if ((E4mcClient.session != null) && (E4mcClient.session.state != QuiclimeSession.State.STOPPED)) {

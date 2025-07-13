@@ -22,28 +22,28 @@ import java.net.InetSocketAddress;
 
 @Mixin(NetworkSystem.class)
 public abstract class NetworkSystemMixin {
-    @Shadow public abstract void addEndpoint(InetAddress address, int port) throws IOException;
+    @Shadow public abstract void addLanEndpoint(InetAddress address, int port) throws IOException;
 
     @Unique
     private static final ThreadLocal<Boolean> e4mc_retro$isAddingRelay = ThreadLocal.withInitial(() -> false);
 
-    @Inject(method = "addEndpoint", at = @At("HEAD"))
+    @Inject(method = "addLanEndpoint", at = @At("HEAD"))
     public void addLanEndpoint(InetAddress address, int port, CallbackInfo ci) throws IOException {
         if (!e4mc_retro$isAddingRelay.get()) {
             e4mc_retro$isAddingRelay.set(true);
 
-            this.addEndpoint(null, 0);
+            this.addLanEndpoint(null, 0);
 
             e4mc_retro$isAddingRelay.set(false);
         }
     }
 
-    @Redirect(method = "addEndpoint", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/ServerBootstrap;localAddress(Ljava/net/InetAddress;I)Lio/netty/bootstrap/AbstractBootstrap;"))
+    @Redirect(method = "addLanEndpoint", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/ServerBootstrap;localAddress(Ljava/net/InetAddress;I)Lio/netty/bootstrap/AbstractBootstrap;"))
     private AbstractBootstrap<ServerBootstrap, ServerChannel> redirectAddress(ServerBootstrap instance, InetAddress address, int port) {
         return e4mc_retro$isAddingRelay.get() ? instance.localAddress("127.0.0.1", 0) : instance.localAddress(address, port);
     }
 
-    @Redirect(method = "addEndpoint", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/ServerBootstrap;bind()Lio/netty/channel/ChannelFuture;"))
+    @Redirect(method = "addLanEndpoint", at = @At(value = "INVOKE", target = "Lio/netty/bootstrap/ServerBootstrap;bind()Lio/netty/channel/ChannelFuture;"))
     private ChannelFuture onBind(ServerBootstrap instance) {
         ChannelFuture future = instance.bind();
         if (e4mc_retro$isAddingRelay.get()) {

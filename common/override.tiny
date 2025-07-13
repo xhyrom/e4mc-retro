@@ -2,3 +2,4 @@ tiny	2	0	intermediary	named
 c	net/minecraft/server/MinecraftServer	net/minecraft/server/MinecraftServer
 	m	()Ljava/lang/String;	method_2974	getServerOwner
 	m	()Lnet/minecraft/server/MinecraftServer;	method_2970	getServer
+	m	(Z)V	method_3022	setOnlineMode
