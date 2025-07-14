@@ -13,7 +13,6 @@ e4mc is a reverse tunneling reverse proxy for Minecraft. In simpler terms, it's 
 Simply install the mod, and Open to LAN as normal. A public domain will appear alongside the local port. Others can simply connect to the public domain to connect to your LAN server.
 
 ## Version Support
-
 | Version |           e4mc Retro Forge           |            e4mc             |
 | ------- | :----------------------------------: | :-------------------------: |
 | 1.2.x   |                  ❌                  |             ❌              |
@@ -21,8 +20,8 @@ Simply install the mod, and Open to LAN as normal. A public domain will appear a
 | 1.4.x   |                  ❌                  |             ❌              |
 | 1.5.x   |                  ❌                  |             ❌              |
 | 1.6.x   |                  ❌                  |             ❌              |
-| 1.7.x   |                  ⌛                  |             ❌              |
-| 1.8.x   |                  ❌                  |             ❌              |
+| 1.7.x   |                 ⚠️¹                 |             ❌              |
+| 1.8.x   |                 ⚠️¹                 |             ❌              |
 | 1.9.x   | ✅ _(Forge, Legacy Fabric, Ornithe)_ |             ❌              |
 | 1.10.x  | ✅ _(Forge, Legacy Fabric, Ornithe)_ |             ❌              |
 | 1.11.x  | ✅ _(Forge, Legacy Fabric, Ornithe)_ |             ❌              |
@@ -36,3 +35,5 @@ Simply install the mod, and Open to LAN as normal. A public domain will appear a
 | 1.19.x  |                  ❌                  | ✅ _(Forge, Fabric, Quilt)_ |
 | 1.20.x  |                  ❌                  | ✅ _(Forge, Fabric, Quilt)_ |
 | 1.21.x  |                  ❌                  | ✅ _(Forge, Fabric, Quilt)_ |
+
+¹ Currently in testing and development, not released yet. You can build it yourself or explore its progress in other branches within this repository.
