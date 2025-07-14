@@ -1,9 +1,9 @@
 package link.e4mc.platform;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.Loader;
+import cpw.mods.fml.relauncher.Side;
 import link.e4mc.platform.services.Agnos;
-import net.minecraftforge.fml.common.FMLCommonHandler;
-import net.minecraftforge.fml.common.Loader;
-import net.minecraftforge.fml.relauncher.Side;
 
 import java.nio.file.Path;
 

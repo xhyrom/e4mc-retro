@@ -8,7 +8,8 @@ pluginManagement {
         maven("https://maven.legacyfabric.net/")
         maven("https://maven.minecraftforge.net/")
         maven("https://repo.spongepowered.org/maven/")
-        maven("https://maven.crystaelix.com/releases/")
+        maven("https://maven.wagyourtail.xyz/releases")
+        maven("https://maven.wagyourtail.xyz/snapshots")
         maven("https://maven.ornithemc.net/releases")
         maven("https://maven.ornithemc.net/snapshots")
     }

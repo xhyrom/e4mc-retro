@@ -4,7 +4,7 @@ plugins {
     id("java")
     id("idea")
     id("me.modmuss50.mod-publish-plugin") version "0.8.4"
-    id("com.crystaelix.loom") version "1.10.0" apply false
+    id("xyz.wagyourtail.unimined") version "1.4.2-SNAPSHOT" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
 }
 
@@ -138,7 +138,7 @@ publishMods {
         modLoaders.add("forge")
     }*/
 
-    modrinth("modrinthFabric") {
+    /*modrinth("modrinthFabric") {
         from(mrOptions)
         file(project(":fabric"))
         modLoaders.add("fabric")
@@ -155,7 +155,7 @@ publishMods {
         requires {
             slug = "osl"
         }
-    }
+    }*/
 
     /*modrinth("modrinthForge") {
         from(mrOptions)

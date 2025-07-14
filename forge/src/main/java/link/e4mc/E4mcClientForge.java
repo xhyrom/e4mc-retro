@@ -1,9 +1,9 @@
 package link.e4mc;
 
+import cpw.mods.fml.common.Mod;
+import cpw.mods.fml.common.event.FMLInitializationEvent;
 import net.minecraft.command.CommandBase;
 import net.minecraftforge.client.ClientCommandHandler;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 
 @Mod(modid = E4mcClient.MOD_ID, useMetadata = true, acceptableRemoteVersions = "*")
 public class E4mcClientForge {

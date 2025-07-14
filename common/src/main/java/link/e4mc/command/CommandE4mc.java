@@ -8,6 +8,7 @@ import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChatComponentTranslation;
+import org.jetbrains.annotations.NotNull;
 
 public class CommandE4mc extends CommandBase {
     @Override
@@ -22,7 +23,7 @@ public class CommandE4mc extends CommandBase {
 
     @Override
     public boolean canCommandSenderUseCommand(ICommandSender sender) {
-        return MinecraftServer.getServer().getServerOwner().equals(sender.method_2518());
+        return MinecraftServer.getServer().getServerOwner().equals(sender.getCommandSenderName());
     }
 
     @Override
@@ -33,7 +34,7 @@ public class CommandE4mc extends CommandBase {
 
         switch (args[0]) {
             case "offline":
-                Minecraft.getMinecraft().getIntegratedServer().method_3022(false);
+                Minecraft.getMinecraft().getIntegratedServer().setOnlineMode(false);
                 break;
             case "stop":
                 if ((E4mcClient.session != null) && (E4mcClient.session.state != QuiclimeSession.State.STOPPED)) {
@@ -55,5 +56,10 @@ public class CommandE4mc extends CommandBase {
             default:
                 throw new CommandException("commands.e4mc.unknown_command", args[0]);
         }
+    }
+
+    @Override
+    public int compareTo(@NotNull Object o) {
+        return 0;
     }
 }
