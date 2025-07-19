@@ -102,16 +102,16 @@ publishMods {
     changelog = getLatestChangelog()
 
     val versions = listOf(
-        "1.8",
-        "1.8.1",
-        "1.8.2",
-        "1.8.3",
-        "1.8.4",
-        "1.8.5",
-        "1.8.6",
-        "1.8.7",
-        "1.8.8",
-        "1.8.9",
+        "1.7.1",
+        "1.7.2",
+        "1.7.3",
+        "1.7.4",
+        "1.7.5",
+        "1.7.6",
+        "1.7.7",
+        "1.7.8",
+        "1.7.9",
+        "1.7.10",
     )
 
     val curseforgeToken = providers.gradleProperty("curseforge.token")
@@ -132,13 +132,13 @@ publishMods {
         minecraftVersions.addAll(versions)
     }
 
-    /*curseforge("curseforgeForge") {
+    curseforge("curseforgeForge") {
         from(cfOptions)
         file(project(":forge"))
         modLoaders.add("forge")
-    }*/
+    }
 
-    /*modrinth("modrinthFabric") {
+    modrinth("modrinthFabric") {
         from(mrOptions)
         file(project(":fabric"))
         modLoaders.add("fabric")
@@ -155,13 +155,13 @@ publishMods {
         requires {
             slug = "osl"
         }
-    }*/
+    }
 
-    /*modrinth("modrinthForge") {
+    modrinth("modrinthForge") {
         from(mrOptions)
         file(project(":forge"))
         modLoaders.add("forge")
-    }*/
+    }
 }
 
 fun getLatestChangelog(): String {

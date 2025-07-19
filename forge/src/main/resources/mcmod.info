@@ -4,7 +4,7 @@
     "name": "e4mc Retro",
     "description": "Open a LAN server to anyone, anywhere, anytime.",
     "version": "${version}",
-    "mcversion": "1.9,1.9.1,1.9.2,1.9.3,1.9.4,1.10,1.10.1,1.10.2,1.11,1.11.1,1.11.2,1.12,1.12.1,1.12.2",
+    "mcversion": "1.7.1,1.7.2,1.7.3,1.7.4,1.7.5,1.7.6,1.7.7,1.7.8,1.7.9,1.7.10",
 	"url": "https://modrinth.com/mod/e4mc-retro",
 	"updateUrl": "",
 	"authorList": [
