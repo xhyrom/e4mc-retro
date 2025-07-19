@@ -7,10 +7,8 @@ plugins {
     id("com.github.johnrengelman.shadow")
 }
 
-val modVersion: String = property("mod_version") as String
 val minecraftVersion: String = property("minecraft_version") as String
 val mcpVersion: String = property("mcp_version") as String
-val supportedMinecraftVersions: String = property("supported_minecraft_versions") as String
 val loaderVersion: String = property("fabric_loader_version") as String
 val oslVersion: String = property("ornithe_osl_version") as String
 
@@ -50,9 +48,4 @@ tasks.named<RemapJarTask>("remapJar") {
 
 tasks.build {
     dependsOn(tasks.named("remapJar"))
-}
-
-publishMods {
-    file = tasks.named<RemapJarTask>("remapJar").get().asJar.archiveFile
-    displayName = "e4mc Retro ${project.name} ${modVersion}+${supportedMinecraftVersions}"
 }
