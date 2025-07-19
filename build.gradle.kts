@@ -136,6 +136,8 @@ publishMods {
         from(cfOptions)
         file(project(":forge"))
         modLoaders.add("forge")
+
+        requires("unimixins")
     }
 
     modrinth("modrinthFabric") {
@@ -161,6 +163,8 @@ publishMods {
         from(mrOptions)
         file(project(":forge"))
         modLoaders.add("forge")
+
+        requires("unimixins")
     }
 }
 
