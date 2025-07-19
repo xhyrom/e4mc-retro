@@ -103,7 +103,6 @@ publishMods {
     type = STABLE
     changelog = getLatestChangelog()
     version = "${modVersion}+${supportedMinecraftVersions}"
-    dryRun = true
 
     val versions = listOf(
         "1.8",
