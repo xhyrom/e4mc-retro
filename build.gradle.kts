@@ -1,4 +1,6 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import net.fabricmc.loom.task.RemapJarTask
+import org.gradle.kotlin.dsl.support.uppercaseFirstChar
 
 plugins {
     id("java")
@@ -100,6 +102,8 @@ subprojects {
 publishMods {
     type = STABLE
     changelog = getLatestChangelog()
+    version = "${modVersion}+${supportedMinecraftVersions}"
+    dryRun = true
 
     val versions = listOf(
         "1.8",
@@ -123,7 +127,7 @@ publishMods {
     val cfOptions = curseforgeOptions {
         accessToken.set(curseforgeToken)
         projectId.set("1302894")
-        minecraftVersions.addAll(versions)
+        minecraftVersions.addAll(versions.filter { it != "1.7.1" })
     }
 
     val mrOptions = modrinthOptions {
@@ -134,23 +138,53 @@ publishMods {
 
     curseforge("curseforgeForge") {
         from(cfOptions)
-        file(project(":forge"))
+
+        val proj = project(":forge")
+        val remapJarProvider = proj.provider {
+            proj.tasks.named<RemapJarTask>("remapJar")
+                .flatMap { it.archiveFile }
+        }.flatMap { it }
+
+        file.set(remapJarProvider)
+        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
+
         modLoaders.add("forge")
+
+        requires("unimixins")
     }
 
     modrinth("modrinthFabric") {
         from(mrOptions)
-        file(project(":fabric"))
+
+        val proj = project(":fabric")
+        val remapJarProvider = proj.provider {
+            proj.tasks.named<RemapJarTask>("remapJar")
+                .flatMap { it.archiveFile }
+        }.flatMap { it }
+
+        file.set(remapJarProvider)
+        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
+
         modLoaders.add("fabric")
         modLoaders.add("legacy-fabric")
+
         requires {
-            slug = "fabric-api"
+            slug = "legacy-fabric-api"
         }
     }
 
     modrinth("modrinthOrnithe") {
         from(mrOptions)
-        file(project(":ornithe"))
+
+        val proj = project(":ornithe")
+        val remapJarProvider = proj.provider {
+            proj.tasks.named<RemapJarTask>("remapJar")
+                .flatMap { it.archiveFile }
+        }.flatMap { it }
+
+        file.set(remapJarProvider)
+        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
+
         modLoaders.add("ornithe")
         requires {
             slug = "osl"
@@ -159,8 +193,19 @@ publishMods {
 
     modrinth("modrinthForge") {
         from(mrOptions)
-        file(project(":forge"))
+
+        val proj = project(":forge")
+        val remapJarProvider = proj.provider {
+            proj.tasks.named<RemapJarTask>("remapJar")
+                .flatMap { it.archiveFile }
+        }.flatMap { it }
+
+        file.set(remapJarProvider)
+        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
+
         modLoaders.add("forge")
+
+        requires("unimixins")
     }
 }
 

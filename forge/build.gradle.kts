@@ -82,8 +82,3 @@ tasks.remapJar {
 tasks.build {
     dependsOn(tasks.remapJar)
 }
-
-publishMods {
-    file = tasks.remapJar.get().archiveFile
-    displayName = "${base.archivesName.get()}.jar"
-}

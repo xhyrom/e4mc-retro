@@ -52,8 +52,3 @@ tasks.remapJar {
 tasks.build {
     dependsOn(tasks.remapJar)
 }
-
-publishMods {
-    file = tasks.remapJar.get().archiveFile
-    displayName = "e4mc Retro ${project.name} ${modVersion}+${supportedMinecraftVersions}"
-}
