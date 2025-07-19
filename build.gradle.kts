@@ -126,7 +126,7 @@ publishMods {
     val cfOptions = curseforgeOptions {
         accessToken.set(curseforgeToken)
         projectId.set("1302894")
-        minecraftVersions.addAll(versions.filter { it != "1.7.1" })
+        minecraftVersions.addAll(versions)
     }
 
     val mrOptions = modrinthOptions {
