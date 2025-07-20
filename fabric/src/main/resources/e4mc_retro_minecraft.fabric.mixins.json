@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "minVersion": "0.7",
+  "package": "link.e4mc.mixin",
+  "compatibilityLevel": "JAVA_8",
+  "mixins": [
+    "CommandsMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

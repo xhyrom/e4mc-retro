@@ -38,13 +38,6 @@ dependencies {
     shadowBundle(project(":common", configuration = "noRemap"))
 }
 
-sourceSets {
-    main {
-        compileClasspath += project(":common").sourceSets["main"].output
-        runtimeClasspath += project(":common").sourceSets["main"].output
-    }
-}
-
 tasks.named<RemapJarTask>("remapJar") {
     dependsOn(tasks.shadowJar)
     asJar {

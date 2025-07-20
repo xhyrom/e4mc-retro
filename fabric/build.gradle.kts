@@ -1,4 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.kotlin.dsl.named
 import xyz.wagyourtail.unimined.api.minecraft.task.RemapJarTask
 
@@ -32,13 +31,6 @@ unimined.minecraft {
 dependencies {
     implementation(project(":common", configuration = "noRemap"))
     shadowBundle(project(":common", configuration = "noRemap"))
-}
-
-sourceSets {
-    main {
-        compileClasspath += project(":common").sourceSets["main"].output
-        runtimeClasspath += project(":common").sourceSets["main"].output
-    }
 }
 
 tasks.named<RemapJarTask>("remapJar") {

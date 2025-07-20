@@ -46,13 +46,6 @@ dependencies {
     }
 }
 
-sourceSets {
-    main {
-        compileClasspath += project(":common").sourceSets["main"].output
-        runtimeClasspath += project(":common").sourceSets["main"].output
-    }
-}
-
 tasks.withType(org.gradle.jvm.tasks.Jar::class) {
     archiveBaseName.set(modId)
     manifest.attributes.run {

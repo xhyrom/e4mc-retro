@@ -9,7 +9,7 @@ public class Services {
     public static final Agnos AGNOS = load(Agnos.class);
 
     public static <T> T load(Class<T> clazz) {
-        final T loadedService = ServiceLoader.load(clazz)
+        final T loadedService = ServiceLoader.load(clazz, clazz.getClassLoader())
                 .iterator().next();
 
         if (loadedService == null) {
