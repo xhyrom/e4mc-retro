@@ -1,0 +1,19 @@
+{
+  "required": true,
+  "minVersion": "0.7",
+  "package": "dev.xhyrom.e4mc.net.legacyfabric.resourceloader.mixin.resource.loader",
+  "compatibilityLevel": "JAVA_8",
+  "client": [
+    "DefaultResourcePackMixin",
+    "KeyedResourceReloadListenerMixin$Client",
+    "KeyedResourceReloadListenerMixin$Server",
+    "MinecraftClientMixin",
+    "ReloadableResourceManagerImplMixin"
+  ],
+  "mixins": [
+    "MinecraftServerMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
