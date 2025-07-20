@@ -5,13 +5,16 @@
   "compatibilityLevel": "JAVA_8",
   "refmap": "${mod_id}.refmap.json",
   "mixins": [
-    "CommandBanPlayerMixin",
-    "CommandListBansMixin",
-    "CommandPardonPlayerMixin",
-    "CommandWhitelistMixin",
-    "NetworkSystemMixin"
+    "BanCommandMixin",
+    "BanListCommandMixin",
+    "PardonCommandMixin",
+    "WhitelistCommandMixin",
+    "NetworkSystemMixin",
+    "CommandsMixin"
   ],
-  "client": [],
+  "client": [
+    "PlayerListMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

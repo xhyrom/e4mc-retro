@@ -1,3 +1,5 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import org.gradle.kotlin.dsl.named
 import xyz.wagyourtail.unimined.api.minecraft.task.RemapJarTask
 
 plugins {
@@ -9,7 +11,6 @@ plugins {
 val minecraftVersion: String = property("minecraft_version") as String
 val mcpVersion: String = property("mcp_version") as String
 val loaderVersion: String = property("fabric_loader_version") as String
-val fabricVersion: String = property("fabric_version") as String
 
 val shadowBundle: Configuration by configurations.creating
 
@@ -22,19 +23,13 @@ unimined.minecraft {
 
     mappings {
         searge()
-        mcp("stable", mcpVersion)
+        mcp("snapshot", mcpVersion)
     }
 
     defaultRemapJar = true
 }
 
-repositories {
-   unimined.legacyFabricMaven()
-}
-
 dependencies {
-    "modImplementation"("net.legacyfabric.legacy-fabric-api:legacy-fabric-api:${fabricVersion}")
-
     implementation(project(":common", configuration = "noRemap"))
     shadowBundle(project(":common", configuration = "noRemap"))
 }

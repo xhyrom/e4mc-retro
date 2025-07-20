@@ -1,20 +1,19 @@
 package link.e4mc.platform;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.Loader;
-import cpw.mods.fml.relauncher.Side;
 import link.e4mc.platform.services.Agnos;
+import net.minecraftforge.fml.loading.FMLLoader;
+import net.minecraftforge.fml.loading.FMLPaths;
 
 import java.nio.file.Path;
 
 public class ForgeAgnos implements Agnos {
     @Override
     public boolean isClient() {
-        return FMLCommonHandler.instance().getSide() == Side.CLIENT;
+        return FMLLoader.getDist().isClient();
     }
 
     @Override
     public Path configDir() {
-        return Loader.instance().getConfigDir().toPath();
+        return FMLPaths.CONFIGDIR.get();
     }
 }

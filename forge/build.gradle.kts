@@ -24,7 +24,7 @@ unimined.minecraft {
 
     mappings {
         searge()
-        mcp("stable", mcpVersion)
+        mcp("snapshot", mcpVersion)
     }
 
     defaultRemapJar = true
