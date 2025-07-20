@@ -110,7 +110,7 @@ publishMods {
     val cfOptions = curseforgeOptions {
         accessToken.set(curseforgeToken)
         projectId.set("1302894")
-        minecraftVersions.addAll(versions.filter { it != "1.7.1" })
+        minecraftVersions.addAll(versions)
     }
 
     val mrOptions = modrinthOptions {
@@ -166,6 +166,21 @@ publishMods {
         requires {
             slug = "osl"
         }
+    }
+
+    modrinth("modrinthRift") {
+        from(mrOptions)
+
+        val proj = project(":rift")
+        val remapJarProvider = proj.provider {
+            proj.tasks.named<RemapJarTask>("remapJar")
+                .flatMap { it.asJar.archiveFile }
+        }.flatMap { it }
+
+        file.set(remapJarProvider)
+        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
+
+        modLoaders.add("rift")
     }
 
     modrinth("modrinthForge") {
