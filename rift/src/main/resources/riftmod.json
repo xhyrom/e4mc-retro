@@ -1,0 +1,11 @@
+{
+  "id": "${mod_id}",
+  "name": "e4mc Retro",
+  "authors": [
+    "skyevg",
+    "xhyrom"
+  ],
+  "listeners": [
+    "link.e4mc.E4mcClientRift"
+  ]
+}

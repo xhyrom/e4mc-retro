@@ -26,7 +26,8 @@ sequenceOf(
     "common",
     "fabric",
     "forge",
-    "ornithe"
+    "ornithe",
+    "rift"
 ).forEach {
     include(it)
 }
