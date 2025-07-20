@@ -37,13 +37,6 @@ repositories {
 dependencies {
     implementation(project(":common", configuration = "noRemap"))
     shadowBundle(project(":common", configuration = "noRemap"))
-
-    implementation("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.20") {
-        isTransitive = false
-    }
-    annotationProcessor("com.github.LegacyModdingMC.UniMixins:unimixins-all-1.7.10:0.1.20") {
-        isTransitive = false
-    }
 }
 
 tasks.withType(org.gradle.jvm.tasks.Jar::class) {

@@ -96,16 +96,9 @@ publishMods {
     version = "${modVersion}+${supportedMinecraftVersions}"
 
     val versions = listOf(
-        "1.7.1",
-        "1.7.2",
-        "1.7.3",
-        "1.7.4",
-        "1.7.5",
-        "1.7.6",
-        "1.7.7",
-        "1.7.8",
-        "1.7.9",
-        "1.7.10",
+        "1.13",
+        "1.13.1",
+        "1.13.2"
     )
 
     val curseforgeToken = providers.gradleProperty("curseforge.token")
@@ -139,8 +132,6 @@ publishMods {
         displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
 
         modLoaders.add("forge")
-
-        requires("unimixins")
     }
 
     modrinth("modrinthFabric") {
@@ -157,10 +148,6 @@ publishMods {
 
         modLoaders.add("fabric")
         modLoaders.add("legacy-fabric")
-
-        requires {
-            slug = "legacy-fabric-api"
-        }
     }
 
     modrinth("modrinthOrnithe") {
@@ -195,7 +182,7 @@ publishMods {
 
         modLoaders.add("forge")
 
-        requires("unimixins")
+        requires("modernmixins")
     }
 }
 

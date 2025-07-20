@@ -29,6 +29,7 @@ import org.apache.logging.log4j.Logger;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -41,7 +42,8 @@ public class MinecraftClientMixin {
 
     @Shadow @Final private static Logger LOGGER;
 
-    private void fabric_modifyResourcePackList(List<IResourcePack> list) {
+    @Unique
+    private void e4mc_retro_fabric_modifyResourcePackList(List<IResourcePack> list) {
         List<IResourcePack> oldList = Lists.newArrayList(list);
         list.clear();
 
@@ -73,6 +75,6 @@ public class MinecraftClientMixin {
 
     @Inject(method = "refreshResources", at = @At(value = "INVOKE", target = "Lnet/minecraft/resources/IReloadableResourceManager;reload(Ljava/util/List;)V", ordinal = 0), locals = LocalCapture.CAPTURE_FAILHARD)
     public void refreshResources(CallbackInfo ci, List<IResourcePack> list) {
-        fabric_modifyResourcePackList(list);
+        e4mc_retro_fabric_modifyResourcePackList(list);
     }
 }

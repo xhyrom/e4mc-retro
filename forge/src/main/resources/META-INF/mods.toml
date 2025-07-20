@@ -1,6 +1,6 @@
 modLoader = "javafml"
 loaderVersion = "*"
-license = "MIT"
+license = "Apache-2.0"
 
 [[mods]]
 modId = "${mod_id}"
@@ -8,6 +8,7 @@ version = "${version}"
 displayName = "e4mc Retro"
 credits = "skyevg as original author, xhyrom for the backport"
 authors = "skyevg, xhyrom"
+logoFile = "assets/${mod_id}/icon.png"
 description = '''
 Open a LAN server to anyone, anywhere, anytime.
 '''

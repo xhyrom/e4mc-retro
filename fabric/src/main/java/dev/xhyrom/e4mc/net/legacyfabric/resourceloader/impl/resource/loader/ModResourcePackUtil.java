@@ -22,6 +22,7 @@ import java.nio.file.Path;
 import java.util.List;
 
 import com.google.common.base.Charsets;
+import link.e4mc.E4mcClient;
 import net.minecraft.resources.ResourcePackType;
 import org.apache.commons.io.IOUtils;
 
@@ -42,17 +43,13 @@ public final class ModResourcePackUtil {
     }
 
     public static void appendModResourcePacks(List<IResourcePack> packList, ResourcePackType type) {
-        for (ModContainer container : FabricLoader.getInstance().getAllMods()) {
-            if (container.getMetadata().getType().equals("builtin")) {
-                continue;
-            }
+        ModContainer container = FabricLoader.getInstance().getModContainer(E4mcClient.MOD_ID).orElseThrow(() -> new IllegalStateException("E4mc mod container not found!"));
 
-            Path path = container.getRootPath();
-            IResourcePack pack = new ModNioResourcePack(container, path, null);
+        Path path = container.getRootPath();
+        IResourcePack pack = new ModNioResourcePack(container, path, null);
 
-            if (!pack.getResourceNamespaces(type).isEmpty()) {
-                packList.add(pack);
-            }
+        if (!pack.getResourceNamespaces(type).isEmpty()) {
+            packList.add(pack);
         }
     }
 

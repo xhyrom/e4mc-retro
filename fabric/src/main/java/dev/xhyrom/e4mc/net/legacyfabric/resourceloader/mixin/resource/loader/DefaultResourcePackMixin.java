@@ -44,7 +44,6 @@ public class DefaultResourcePackMixin {
         }
 
         String path = resourceType.getDirectoryName() + "/" + identifier.getNamespace() + "/" + identifier.getPath();
-        //String path = "assets/" + identifier.getNamespace() + "/" + identifier.getPath();
         URL found = null;
 
         try {
