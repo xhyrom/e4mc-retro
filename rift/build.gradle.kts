@@ -31,16 +31,6 @@ dependencies {
     shadowBundle(project(":common", configuration = "noRemap"))
 }
 
-tasks.withType(org.gradle.jvm.tasks.Jar::class) {
-    archiveBaseName.set(modId)
-    manifest.attributes.run {
-        this["FMLCorePluginContainsFMLMod"] = "true"
-        this["ForceLoadAsMod"] = "true"
-        this["TweakClass"] = "org.spongepowered.asm.launch.MixinTweaker"
-        this["MixinConfigs"] = "${modId}.mixins.json"
-    }
-}
-
 tasks.named<RemapJarTask>("remapJar") {
     dependsOn(tasks.shadowJar)
     asJar {
