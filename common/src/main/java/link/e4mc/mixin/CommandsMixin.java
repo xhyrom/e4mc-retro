@@ -15,7 +15,7 @@ public abstract class CommandsMixin {
     @Shadow public abstract CommandDispatcher<CommandSourceStack> getDispatcher();
 
     @Inject(method = "<init>", at = @At("TAIL"))
-    public void init(boolean p_i49161_1, CallbackInfo ci) {
+    public void init(boolean bl, CallbackInfo ci) {
         E4mcClient.registerCommands(getDispatcher());
     }
 }

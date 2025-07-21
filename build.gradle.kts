@@ -96,11 +96,9 @@ publishMods {
     version = "${modVersion}+${supportedMinecraftVersions}"
 
     val versions = listOf(
-        "1.14",
-        "1.14.1",
-        "1.14.2",
-        "1.14.3",
-        "1.14.4"
+        "1.15",
+        "1.15.1",
+        "1.15.2",
     )
 
     val curseforgeToken = providers.gradleProperty("curseforge.token")
@@ -187,23 +185,6 @@ publishMods {
         modLoaders.add("fabric")
 
         requires("fabric-api")
-    }
-
-    modrinth("modrinthOrnithe") {
-        from(mrOptions)
-
-        val proj = project(":ornithe")
-        val remapJarProvider = proj.provider {
-            proj.tasks.named<RemapJarTask>("remapJar")
-                .flatMap { it.asJar.archiveFile }
-        }.flatMap { it }
-
-        file.set(remapJarProvider)
-        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
-
-        modLoaders.add("ornithe")
-
-        requires("osl")
     }
 
     modrinth("modrinthQuilt") {

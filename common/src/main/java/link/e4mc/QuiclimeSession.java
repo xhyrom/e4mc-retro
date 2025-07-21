@@ -398,7 +398,7 @@ public class QuiclimeSession {
                                                                     TextComponent domainComponent = new TextComponent(domain);
                                                                     domainComponent.setStyle(new Style()
                                                                             .setColor(ChatFormatting.GREEN)
-                                                                            .setClickEvent(new ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, domain))
+                                                                            .setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, domain))
                                                                             .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                                                                                     new TextComponent("Click to copy"))));
 
