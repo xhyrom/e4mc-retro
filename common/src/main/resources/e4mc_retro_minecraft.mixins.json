@@ -8,7 +8,8 @@
     "BanListCommandsMixin",
     "PardonCommandMixin",
     "WhitelistCommandMixin",
-    "ServerConnectionListenerMixin"
+    "ServerConnectionListenerMixin",
+    "netty.NativeLibraryLoaderMixin"
   ],
   "client": [
     "PlayerListMixin"
