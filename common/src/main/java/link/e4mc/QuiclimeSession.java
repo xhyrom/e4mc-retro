@@ -396,16 +396,16 @@ public class QuiclimeSession {
                                                                 E4mcClient.LOGGER.info("Domain assigned: {}", domain);
                                                                 if (Services.AGNOS.isClient()) {
                                                                     TextComponent domainComponent = new TextComponent(domain);
-                                                                    domainComponent.setStyle(new Style()
-                                                                            .setColor(ChatFormatting.GREEN)
-                                                                            .setClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, domain))
-                                                                            .setHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
+                                                                    domainComponent.setStyle(Style.EMPTY
+                                                                            .withColor(ChatFormatting.GREEN)
+                                                                            .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, domain))
+                                                                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
                                                                                     new TextComponent("Click to copy"))));
 
                                                                     TranslatableComponent stopComponent = new TranslatableComponent("text.e4mc_minecraft.clickToStop");
-                                                                    stopComponent.setStyle(new Style()
-                                                                            .setColor(ChatFormatting.GRAY)
-                                                                            .setClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/e4mc stop")));
+                                                                    stopComponent.setStyle(Style.EMPTY
+                                                                            .withColor(ChatFormatting.GRAY)
+                                                                            .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/e4mc stop")));
 
                                                                     TranslatableComponent baseMessage = new TranslatableComponent("text.e4mc_minecraft.domainAssigned", domainComponent);
                                                                     baseMessage.append(stopComponent);

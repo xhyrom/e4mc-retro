@@ -7,6 +7,7 @@ plugins {
 }
 
 val minecraftVersion: String = property("minecraft_version") as String
+
 val shadowBundle: Configuration by configurations.creating
 val noRemap: Configuration by configurations.creating
 
