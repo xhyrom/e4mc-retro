@@ -134,6 +134,21 @@ publishMods {
         modLoaders.add("forge")
     }
 
+    curseforge("curseforgeRift") {
+        from(cfOptions)
+
+        val proj = project(":rift")
+        val remapJarProvider = proj.provider {
+            proj.tasks.named<RemapJarTask>("remapJar")
+                .flatMap { it.asJar.archiveFile }
+        }.flatMap { it }
+
+        file.set(remapJarProvider)
+        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
+
+        modLoaders.add("rift")
+    }
+
     modrinth("modrinthFabric") {
         from(mrOptions)
 
