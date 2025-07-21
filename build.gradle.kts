@@ -134,6 +134,42 @@ publishMods {
         displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
 
         modLoaders.add("forge")
+
+        requires("mixinbootstrap")
+    }
+
+    curseforge("curseforgeFabric") {
+        from(cfOptions)
+
+        val proj = project(":fabric")
+        val remapJarProvider = proj.provider {
+            proj.tasks.named<RemapJarTask>("remapJar")
+                .flatMap { it.asJar.archiveFile }
+        }.flatMap { it }
+
+        file.set(remapJarProvider)
+        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
+
+        modLoaders.add("fabric")
+
+        requires("fabric-api")
+    }
+
+    curseforge("curseforgeQuilt") {
+        from(cfOptions)
+
+        val proj = project(":quilt")
+        val remapJarProvider = proj.provider {
+            proj.tasks.named<RemapJarTask>("remapJar")
+                .flatMap { it.asJar.archiveFile }
+        }.flatMap { it }
+
+        file.set(remapJarProvider)
+        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
+
+        modLoaders.add("quilt")
+
+        requires("fabric-api")
     }
 
     modrinth("modrinthFabric") {
@@ -149,7 +185,8 @@ publishMods {
         displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
 
         modLoaders.add("fabric")
-        modLoaders.add("legacy-fabric")
+
+        requires("fabric-api")
     }
 
     modrinth("modrinthOrnithe") {
@@ -165,9 +202,25 @@ publishMods {
         displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
 
         modLoaders.add("ornithe")
-        requires {
-            slug = "osl"
-        }
+
+        requires("osl")
+    }
+
+    modrinth("modrinthQuilt") {
+        from(mrOptions)
+
+        val proj = project(":quilt")
+        val remapJarProvider = proj.provider {
+            proj.tasks.named<RemapJarTask>("remapJar")
+                .flatMap { it.asJar.archiveFile }
+        }.flatMap { it }
+
+        file.set(remapJarProvider)
+        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
+
+        modLoaders.add("quilt")
+
+        requires("fabric-api")
     }
 
     modrinth("modrinthForge") {
@@ -184,7 +237,7 @@ publishMods {
 
         modLoaders.add("forge")
 
-        requires("modernmixins")
+        requires("mixinbootstrap")
     }
 }
 

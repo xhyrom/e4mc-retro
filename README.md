@@ -28,7 +28,7 @@ Simply install the mod, and Open to LAN as normal. A public domain will appear a
 | 1.11.x  |    ✅ _(Forge, Legacy Fabric, Ornithe)_    |             ❌              |
 | 1.12.x  |    ✅ _(Forge, Legacy Fabric, Ornithe)_    |             ❌              |
 | 1.13.x  | ✅ _(Forge, Legacy Fabric, Ornithe, Rift)_ |             ❌              |
-| 1.14.x  |                     ⚠️¹                     |             ❌              |
+| 1.14.x  |    ✅ _(Forge, Fabric, Ornithe, Quilt)_    |             ❌              |
 | 1.15.x  |                     ⌛                     |             ❌              |
 | 1.16.x  |                     ⌛                     |             ❌              |
 | 1.17.x  |                     ❌                     | ✅ _(Forge, Fabric, Quilt)_ |
