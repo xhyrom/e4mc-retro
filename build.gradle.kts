@@ -96,9 +96,11 @@ publishMods {
     version = "${modVersion}+${supportedMinecraftVersions}"
 
     val versions = listOf(
-        "1.13",
-        "1.13.1",
-        "1.13.2"
+        "1.14",
+        "1.14.1",
+        "1.14.2",
+        "1.14.3",
+        "1.14.4"
     )
 
     val curseforgeToken = providers.gradleProperty("curseforge.token")
