@@ -28,7 +28,7 @@ public abstract class PlayerListMixin {
 
     @Shadow public abstract MinecraftServer getServer();
 
-    @Inject(method = "/^<init>$/", at = @At("TAIL"))
+    @Inject(method = "<init>", at = @At("TAIL"))
     void injectListLoads(CallbackInfo ci) {
         if (Config.INSTANCE.restoreDedicatedCommands.value()) {
             setUsingWhiteList(Config.INSTANCE.useWhiteList.value());
