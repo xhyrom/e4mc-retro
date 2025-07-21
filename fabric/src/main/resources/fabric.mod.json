@@ -21,15 +21,16 @@
   },
   "mixins": [
     "e4mc_retro_minecraft.mixins.json",
-    "e4mc_retro_minecraft.fabric.mixins.json",
-    "legacy-fabric-resource-loader-v1.mixins.json"
+    "e4mc_retro_minecraft.fabric.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.14.19",
     "minecraft": [
-      "1.13",
-      "1.13.1",
-      "1.13.2"
+      "1.14",
+      "1.14.1",
+      "1.14.2",
+      "1.14.3",
+      "1.14.4"
     ]
   }
 }

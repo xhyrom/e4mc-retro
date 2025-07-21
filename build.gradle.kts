@@ -42,7 +42,7 @@ subprojects {
         inputs.property("version", modVersion)
         inputs.property("mod_id", modId)
 
-        filesMatching(listOf("META-INF/mods.toml", "riftmod.json", "fabric.mod.json", "${modId}.*.mixins.json", "${modId}.mixins.json")) {
+        filesMatching(listOf("META-INF/mods.toml", "quilt.mod.json", "fabric.mod.json", "${modId}.*.mixins.json", "${modId}.mixins.json")) {
             expand(inputs.properties)
         }
     }
@@ -134,21 +134,6 @@ publishMods {
         modLoaders.add("forge")
     }
 
-    curseforge("curseforgeRift") {
-        from(cfOptions)
-
-        val proj = project(":rift")
-        val remapJarProvider = proj.provider {
-            proj.tasks.named<RemapJarTask>("remapJar")
-                .flatMap { it.asJar.archiveFile }
-        }.flatMap { it }
-
-        file.set(remapJarProvider)
-        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
-
-        modLoaders.add("rift")
-    }
-
     modrinth("modrinthFabric") {
         from(mrOptions)
 
@@ -181,21 +166,6 @@ publishMods {
         requires {
             slug = "osl"
         }
-    }
-
-    modrinth("modrinthRift") {
-        from(mrOptions)
-
-        val proj = project(":rift")
-        val remapJarProvider = proj.provider {
-            proj.tasks.named<RemapJarTask>("remapJar")
-                .flatMap { it.asJar.archiveFile }
-        }.flatMap { it }
-
-        file.set(remapJarProvider)
-        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
-
-        modLoaders.add("rift")
     }
 
     modrinth("modrinthForge") {

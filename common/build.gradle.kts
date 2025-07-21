@@ -7,7 +7,6 @@ plugins {
 }
 
 val minecraftVersion: String = property("minecraft_version") as String
-val mcpVersion: String = property("mcp_version") as String
 val shadowBundle: Configuration by configurations.creating
 val noRemap: Configuration by configurations.creating
 
@@ -15,8 +14,8 @@ unimined.minecraft {
     version(minecraftVersion)
 
     mappings {
-        searge()
-        mcp("snapshot", mcpVersion)
+        intermediary()
+        mojmap()
     }
 
     defaultRemapJar = false

@@ -4,11 +4,11 @@
   "package": "link.e4mc.mixin",
   "compatibilityLevel": "JAVA_8",
   "mixins": [
-    "BanCommandMixin",
-    "BanListCommandMixin",
+    "BanPlayerCommandsMixin",
+    "BanListCommandsMixin",
     "PardonCommandMixin",
     "WhitelistCommandMixin",
-    "NetworkSystemMixin"
+    "ServerConnectionListenerMixin"
   ],
   "client": [
     "PlayerListMixin"

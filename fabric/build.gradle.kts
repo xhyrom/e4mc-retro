@@ -8,27 +8,29 @@ plugins {
 }
 
 val minecraftVersion: String = property("minecraft_version") as String
-val mcpVersion: String = property("mcp_version") as String
 val loaderVersion: String = property("fabric_loader_version") as String
+val fabricVersion: String = property("fabric_version") as String
 
 val shadowBundle: Configuration by configurations.creating
 
 unimined.minecraft {
     version(minecraftVersion)
 
-    legacyFabric {
+    fabric {
         loader(loaderVersion)
     }
 
     mappings {
-        searge()
-        mcp("snapshot", mcpVersion)
+        intermediary()
+        mojmap()
     }
 
     defaultRemapJar = true
 }
 
 dependencies {
+    "modImplementation"(unimined.fabricModule("fabric-resource-loader-v0", fabricVersion))
+
     implementation(project(":common", configuration = "noRemap"))
     shadowBundle(project(":common", configuration = "noRemap"))
 }

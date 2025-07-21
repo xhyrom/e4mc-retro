@@ -8,7 +8,6 @@ plugins {
 }
 
 val minecraftVersion: String = property("minecraft_version") as String
-val mcpVersion: String = property("mcp_version") as String
 val loaderVersion: String = property("fabric_loader_version") as String
 val oslVersion: String = property("ornithe_osl_version") as String
 
@@ -22,8 +21,8 @@ unimined.minecraft {
     }
 
     mappings {
-        searge()
-        mcp("snapshot", mcpVersion)
+        intermediary()
+        mojmap()
     }
 
     defaultRemapJar = true

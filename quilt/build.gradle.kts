@@ -7,18 +7,17 @@ plugins {
     id("com.github.johnrengelman.shadow")
 }
 
-val modId: String = property("mod_id") as String
 val minecraftVersion: String = property("minecraft_version") as String
-val forgeVersion: String = property("forge_version") as String
+val loaderVersion: String = property("quilt_loader_version") as String
+val fabricVersion: String = property("fabric_version") as String
 
 val shadowBundle: Configuration by configurations.creating
 
 unimined.minecraft {
     version(minecraftVersion)
 
-    minecraftForge {
-        loader(forgeVersion)
-        mixinConfig("${modId}.mixins.json")
+    quilt {
+        loader(loaderVersion)
     }
 
     mappings {
@@ -29,23 +28,11 @@ unimined.minecraft {
     defaultRemapJar = true
 }
 
-repositories {
-    maven("https://jitpack.io")
-}
-
 dependencies {
+    "modImplementation"(unimined.fabricModule("fabric-resource-loader-v0", fabricVersion))
+
     implementation(project(":common", configuration = "noRemap"))
     shadowBundle(project(":common", configuration = "noRemap"))
-}
-
-tasks.withType(org.gradle.jvm.tasks.Jar::class) {
-    archiveBaseName.set(modId)
-    manifest.attributes.run {
-        this["FMLCorePluginContainsFMLMod"] = "true"
-        this["ForceLoadAsMod"] = "true"
-        this["TweakClass"] = "org.spongepowered.asm.launch.MixinTweaker"
-        this["MixinConfigs"] = "${modId}.mixins.json"
-    }
 }
 
 tasks.named<RemapJarTask>("remapJar") {
