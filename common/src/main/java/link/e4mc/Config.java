@@ -39,6 +39,14 @@ public class Config extends ReflectiveConfig {
     public final TrackedValue<String> relayHost = this.value("test.e4mc.link");
     public final TrackedValue<Integer> relayPort = this.value(25575);
 
+    @Comment("Disables TLS certificate validation for relay connections.\n"
+            + "Use this only as a last resort if you're experiencing SSL certificate errors.\n"
+            + "This is insecure and not recommended.\n"
+            + "Instead, it is strongly recommended to install the Azul Zulu 8 JDK, which avoids these issues.\n"
+            + "For a proper fix, including how to import the certificate manually, see:\n"
+            + "https://github.com/xhyrom/e4mc-retro/issues/2#issuecomment-3102506009")
+    public final TrackedValue<Boolean> useInsecureTLS = this.value(false);
+
     @Comment("Allows use of certain dedicated server commands such as /ban and /whitelist")
     public final TrackedValue<Boolean> restoreDedicatedCommands = this.value(true);
     @Comment("Whether to use whitelists on LAN worlds")
