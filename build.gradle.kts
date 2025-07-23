@@ -44,16 +44,6 @@ subprojects {
         }
     }
 
-    tasks.build {
-        // cleanup
-        doLast {
-            val jarFile = file("${layout.buildDirectory.get()}/libs/${base.archivesName.get()}-all.jar")
-            if (jarFile.exists()) {
-                jarFile.delete()
-            }
-        }
-    }
-
     if (name != "common" && name != "neth") {
         sourceSets.main {
             output.setResourcesDir(sourceSets.main.flatMap { it.java.classesDirectory })
