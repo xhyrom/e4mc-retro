@@ -38,10 +38,14 @@ import dev.xhyrom.e4mc.shadow.io.netty.handler.codec.ByteToMessageCodec;
 import dev.xhyrom.e4mc.shadow.io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import dev.xhyrom.e4mc.shadow.io.netty.incubator.codec.quic.*;
 import link.e4mc.platform.Services;
+import link.e4mc.util.SSLUtil;
 import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.*;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
@@ -49,6 +53,7 @@ import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.security.SecureRandom;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
@@ -268,6 +273,36 @@ public class QuiclimeSession {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setRequestProperty("Accept", "application/json");
+
+            if (conn instanceof HttpsURLConnection) {
+                SSLContext sc = SSLContext.getInstance("TLS");
+
+                if (Config.INSTANCE.useInsecureTLS.value()) {
+                    E4mcClient.LOGGER.warn("Using insecure TLS for broker connection.\n"
+                            + "This disables SSL certificate validation and is not secure.\n"
+                            + "It is strongly recommended to install the Zulu 8 JDK or manually import the certificate.\n"
+                            + "See https://github.com/xhyrom/e4mc-retro/issues/2#issuecomment-3102506009 for details.");
+
+                    sc.init(null, InsecureTrustManagerFactory.INSTANCE.getTrustManagers(), new SecureRandom());
+                    ((HttpsURLConnection) conn).setSSLSocketFactory(sc.getSocketFactory());
+                } else {
+                    try {
+                        E4mcClient.LOGGER.info("Using system default TLS validation for broker connection.");
+
+                        conn.connect();
+                    } catch (SSLException e) {
+                        E4mcClient.LOGGER.warn("System default TLS validation failed, falling back to bundled cert.");
+
+                        sc.init(null, SSLUtil.createTrustManagersFromCert("/certs/broker.e4mc.link.cert"), new SecureRandom());
+
+                        conn = (HttpsURLConnection) url.openConnection();
+                        conn.setRequestMethod("GET");
+                        conn.setRequestProperty("Accept", "application/json");
+                        ((HttpsURLConnection) conn).setSSLSocketFactory(sc.getSocketFactory());
+                        conn.connect();
+                    }
+                }
+            }
 
             E4mcClient.LOGGER.info("req: GET " + url);
 
