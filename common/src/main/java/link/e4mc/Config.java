@@ -44,7 +44,7 @@ public class Config extends ReflectiveConfig {
     public final TrackedValue<Boolean> useBroker = this.value(true);
 
     public final TrackedValue<String> brokerUrl = this.value(
-        "https://broker.e4mc.xhyrom.dev//getBestRelay"
+        "https://broker.e4mc.xhyrom.dev/getBestRelay"
     );
 
     public final TrackedValue<String> relayHost = this.value(
