@@ -1,4 +1,4 @@
-FROM rust:1.76-slim-bookworm as builder
+FROM rust:1.81-slim-bookworm AS builder
 
 WORKDIR /usr/src/retrolime
 COPY . .
@@ -13,7 +13,6 @@ RUN apt-get update && apt-get install -y \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-
 COPY --from=builder /usr/src/retrolime/target/release/quiclime /app/
 
 RUN mkdir -p /app/certs
