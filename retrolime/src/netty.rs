@@ -99,6 +99,7 @@ pub struct Handshake {
 impl Handshake {
     pub fn new(mut packet: &[u8]) -> eyre::Result<Self> {
         let protocol_version = packet.read_sync_i8()?;
+        packet.read_string()?; // username
         let server_address = packet.read_string()?;
         let server_port = packet.read_sync_i32()?;
 
