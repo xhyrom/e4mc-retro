@@ -1,0 +1,29 @@
+version: "3.8"
+
+services:
+  retrolime:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: retrolime
+    ports:
+      - "25565:25565/tcp" # Minecraft port
+      - "25575:25575/udp" # QUIC relay port
+      - "25585:25585/tcp" # Control API port
+    volumes:
+      - ./certs:/app/certs:ro # Mount certificates directory
+    environment:
+      - QUICLIME_BASE_DOMAIN=your-domain.com
+      - QUICLIME_BIND_ADDR_MC=[::]:25565
+      - QUICLIME_BIND_ADDR_QUIC=[::]:25575
+      - QUICLIME_BIND_ADDR_WEB=[::]:25585
+      - QUICLIME_CERT_PATH=/app/certs/fullchain.pem
+      - QUICLIME_KEY_PATH=/app/certs/privkey.pem
+      - RUST_LOG=info
+    restart: unless-stopped
+    networks:
+      - retrolime-network
+
+networks:
+  retrolime-network:
+    driver: bridge
