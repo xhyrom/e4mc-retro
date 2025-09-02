@@ -1,0 +1,18 @@
+[
+  {
+    "modid": "${mod_id}",
+    "name": "e4mc Retro",
+    "description": "Open a LAN server to anyone, anywhere, anytime.",
+    "version": "${version}",
+    "mcversion": "1.6.4",
+    "url": "https://modrinth.com/mod/e4mc-retro",
+    "updateUrl": "",
+    "authorList": [
+      "skyevg", "xhyrom"
+    ],
+    "credits": "skyevg as original author, xhyrom for the backport",
+    "logoFile": "assets/${mod_id}/icon.png",
+    "screenshots": [],
+    "dependencies": []
+  }
+]

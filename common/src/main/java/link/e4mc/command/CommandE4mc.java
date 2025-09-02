@@ -1,59 +1,65 @@
 package link.e4mc.command;
 
-import com.mojang.brigadier.CommandDispatcher;
-import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import link.e4mc.E4mcClient;
 import link.e4mc.QuiclimeSession;
 import net.minecraft.client.Minecraft;
-import net.minecraft.commands.CommandRuntimeException;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.commands.Commands;
-import net.minecraft.network.chat.TranslatableComponent;
+import net.minecraft.command.CommandBase;
+import net.minecraft.command.CommandException;
+import net.minecraft.command.ICommandSender;
+import net.minecraft.server.MinecraftServer;
+import net.minecraft.util.ChatMessageComponent;
+import org.jetbrains.annotations.NotNull;
 
-public class CommandE4mc {
-    public static void register(CommandDispatcher<CommandSourceStack> dispatcher) {
-        dispatcher.register(
-                Commands.literal("e4mc")
-                        .requires(src -> {
-                            if (src.getServer().isDedicatedServer()) {
-                                return src.hasPermission(4);
-                            } else {
-                                try {
-                                    return src.getServer().isSingleplayerOwner(src.getPlayerOrException().getGameProfile());
-                                } catch (CommandSyntaxException e) {
-                                    return false;
-                                }
-                            }
-                        })
-                        .then(Commands.literal("offline")
-                                .executes(context -> {
-                                    Minecraft.getInstance().getSingleplayerServer().setUsesAuthentication(false);
-                                    return 1;
-                                }))
-                        .then(Commands.literal("stop")
-                                .executes(context -> {
-                                    if ((E4mcClient.session != null) && (E4mcClient.session.state != QuiclimeSession.State.STOPPED)) {
-                                        E4mcClient.session.stop();
-                                        context.getSource().sendSuccess(new TranslatableComponent("text.e4mc_minecraft.closeServer"), true);
-                                    } else {
-                                        context.getSource().sendSuccess(new TranslatableComponent("text.e4mc_minecraft.serverAlreadyClosed"), true);
-                                    }
-                                    return 1;
-                                }))
-                        .then(Commands.literal("restart")
-                                .executes(context -> {
-                                    if ((E4mcClient.session != null) && (E4mcClient.session.state != QuiclimeSession.State.STARTED)) {
-                                        E4mcClient.session.stop();
-                                        E4mcClient.session = new QuiclimeSession();
-                                        E4mcClient.session.startAsync();
-                                    } else {
-                                        context.getSource().sendSuccess(new TranslatableComponent("text.e4mc_minecraft.serverAlreadyClosed"), true);
-                                    }
-                                    return 1;
-                                }))
-                        .executes(context -> {
-                            throw new CommandRuntimeException(new TranslatableComponent("commands.e4mc.usage"));
-                        })
-        );
+public class CommandE4mc extends CommandBase {
+    @Override
+    public String getCommandName() {
+        return "e4mc";
+    }
+
+    @Override
+    public String getCommandUsage(ICommandSender sender) {
+        return "commands.e4mc.usage";
+    }
+
+    @Override
+    public boolean canCommandSenderUseCommand(ICommandSender sender) {
+        return MinecraftServer.getServer().getServerOwner().equals(sender.getCommandSenderName());
+    }
+
+    @Override
+    public void processCommand(ICommandSender sender, String[] args) throws CommandException {
+        if (args.length == 0) {
+            throw new CommandException("commands.e4mc.usage");
+        }
+
+        switch (args[0]) {
+            case "offline":
+                Minecraft.getMinecraft().getIntegratedServer().setOnlineMode(false);
+                break;
+            case "stop":
+                if ((E4mcClient.session != null) && (E4mcClient.session.state != QuiclimeSession.State.STOPPED)) {
+                    E4mcClient.session.stop();
+                    sender.sendChatToPlayer(ChatMessageComponent.createFromTranslationKey("text.e4mc_minecraft.closeServer"));
+                } else {
+                    sender.sendChatToPlayer(ChatMessageComponent.createFromTranslationKey( "text.e4mc_minecraft.serverAlreadyClosed"));
+                }
+                break;
+            case "restart":
+                if ((E4mcClient.session != null) && (E4mcClient.session.state != QuiclimeSession.State.STARTED)) {
+                    E4mcClient.session.stop();
+                    E4mcClient.session = new QuiclimeSession();
+                    E4mcClient.session.startAsync();
+                } else {
+                    sender.sendChatToPlayer(ChatMessageComponent.createFromTranslationKey("text.e4mc_minecraft.serverAlreadyClosed"));
+                }
+                break;
+            default:
+                throw new CommandException("commands.e4mc.unknown_command", args[0]);
+        }
+    }
+
+    @Override
+    public int compareTo(@NotNull Object o) {
+        return 0;
     }
 }

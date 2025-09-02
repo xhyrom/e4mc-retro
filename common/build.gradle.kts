@@ -7,6 +7,7 @@ plugins {
 }
 
 val minecraftVersion: String = property("minecraft_version") as String
+val forgeVersion: String = property("forge_version") as String
 
 val shadowBundle: Configuration by configurations.creating
 val noRemap: Configuration by configurations.creating
@@ -15,8 +16,7 @@ unimined.minecraft {
     version(minecraftVersion)
 
     mappings {
-        intermediary()
-        mojmap()
+        forgeBuiltinMCP(forgeVersion)
     }
 
     defaultRemapJar = false
@@ -30,6 +30,9 @@ dependencies {
     api("org.tinylog:tinylog-impl:2.7.0")
     shadowBundle("org.tinylog:tinylog-api:2.7.0")
     shadowBundle("org.tinylog:tinylog-impl:2.7.0")
+
+    api("com.google.code.gson:gson:2.2.4")
+    shadowBundle("com.google.code.gson:gson:2.2.4")
 
     implementation(project(":neth", configuration = "archives"))
     shadowBundle(project(":neth", configuration = "archives"))

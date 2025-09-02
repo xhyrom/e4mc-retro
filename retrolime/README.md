@@ -1,0 +1,1 @@
+**Retrolime** is a fork of the original [quiclime](https://git.skye.vg/me/quiclime) relay server, modified to work specifically with e4mc-retro for supporting legacy Minecraft versions before the Netty rewrite (<1.7).

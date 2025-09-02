@@ -73,6 +73,7 @@ subprojects {
             relocate("org.tinylog", "link.e4mc.shadow.tinylog")
             relocate("com.electronwill.nightconfig", "link.e4mc.shadow.nightconfig")
             relocate("folk.sisby.kaleido", "link.e4mc.shadow.kaleido")
+            relocate("com.google.gson", "link.e4mc.shadow.gson")
 
             mergeServiceFiles()
         }
@@ -156,23 +157,6 @@ publishMods {
         requires("fabric-api")
     }
 
-    curseforge("curseforgeQuilt") {
-        from(cfOptions)
-
-        val proj = project(":quilt")
-        val remapJarProvider = proj.provider {
-            proj.tasks.named<RemapJarTask>("remapJar")
-                .flatMap { it.asJar.archiveFile }
-        }.flatMap { it }
-
-        file.set(remapJarProvider)
-        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
-
-        modLoaders.add("quilt")
-
-        requires("fabric-api")
-    }
-
     modrinth("modrinthFabric") {
         from(mrOptions)
 
@@ -186,23 +170,6 @@ publishMods {
         displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
 
         modLoaders.add("fabric")
-
-        requires("fabric-api")
-    }
-
-    modrinth("modrinthQuilt") {
-        from(mrOptions)
-
-        val proj = project(":quilt")
-        val remapJarProvider = proj.provider {
-            proj.tasks.named<RemapJarTask>("remapJar")
-                .flatMap { it.asJar.archiveFile }
-        }.flatMap { it }
-
-        file.set(remapJarProvider)
-        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
-
-        modLoaders.add("quilt")
 
         requires("fabric-api")
     }

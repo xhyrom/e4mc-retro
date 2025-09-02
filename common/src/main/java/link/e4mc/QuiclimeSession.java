@@ -39,9 +39,9 @@ import dev.xhyrom.e4mc.shadow.io.netty.handler.ssl.util.InsecureTrustManagerFact
 import dev.xhyrom.e4mc.shadow.io.netty.incubator.codec.quic.*;
 import link.e4mc.platform.Services;
 import link.e4mc.util.SSLUtil;
-import net.minecraft.ChatFormatting;
 import net.minecraft.client.Minecraft;
-import net.minecraft.network.chat.*;
+import net.minecraft.client.resources.I18n;
+import org.lwjgl.Sys;
 
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
@@ -139,7 +139,7 @@ public class QuiclimeSession {
                     E4mcClient.LOGGER.info(it.cause());
                     QuiclimeSession.this.state = State.UNHEALTHY;
                     if (Services.AGNOS.isClient()) {
-                        Minecraft.getInstance().gui.getChat().addMessage(new TranslatableComponent("text.e4mc_minecraft.error"));
+                        Minecraft.getMinecraft().ingameGUI.getChatGUI().addTranslatedMessage("text.e4mc_minecraft.error");
                     }
                     toQuiclime.close();
                 }
@@ -160,7 +160,7 @@ public class QuiclimeSession {
             E4mcClient.LOGGER.info(cause);
             QuiclimeSession.this.state = State.UNHEALTHY;
             if (Services.AGNOS.isClient()) {
-                Minecraft.getInstance().gui.getChat().addMessage(new TranslatableComponent("text.e4mc_minecraft.error"));
+                Minecraft.getMinecraft().ingameGUI.getChatGUI().addTranslatedMessage("text.e4mc_minecraft.error");
             }
             this.channelInactive(ctx);
         }
@@ -186,7 +186,7 @@ public class QuiclimeSession {
                     E4mcClient.LOGGER.info(it.cause());
                     QuiclimeSession.this.state = State.UNHEALTHY;
                     if (Services.AGNOS.isClient()) {
-                        Minecraft.getInstance().gui.getChat().addMessage(new TranslatableComponent("text.e4mc_minecraft.error"));
+                        Minecraft.getMinecraft().ingameGUI.getChatGUI().addTranslatedMessage("text.e4mc_minecraft.error");
                     }
                     ctx.channel().close();
                 }
@@ -203,7 +203,7 @@ public class QuiclimeSession {
                         E4mcClient.LOGGER.info(it.cause());
                         QuiclimeSession.this.state = State.UNHEALTHY;
                         if (Services.AGNOS.isClient()) {
-                            Minecraft.getInstance().gui.getChat().addMessage(new TranslatableComponent("text.e4mc_minecraft.error"));
+                            Minecraft.getMinecraft().ingameGUI.getChatGUI().addTranslatedMessage("text.e4mc_minecraft.error");
                         }
                         ((ChannelFuture) it).channel().close();
                     }
@@ -233,7 +233,7 @@ public class QuiclimeSession {
             E4mcClient.LOGGER.info(cause);
             QuiclimeSession.this.state = State.UNHEALTHY;
             if (Services.AGNOS.isClient()) {
-                Minecraft.getInstance().gui.getChat().addMessage(new TranslatableComponent("text.e4mc_minecraft.error"));
+                Minecraft.getMinecraft().ingameGUI.getChatGUI().addTranslatedMessage("text.e4mc_minecraft.error");
             }
             this.channelInactive(ctx);
         }
@@ -371,7 +371,7 @@ public class QuiclimeSession {
                             E4mcClient.LOGGER.info(datagramChannelFuture.cause());
                             QuiclimeSession.this.state = State.UNHEALTHY;
                             if (Services.AGNOS.isClient()) {
-                                Minecraft.getInstance().gui.getChat().addMessage(new TranslatableComponent("text.e4mc_minecraft.error"));
+                                Minecraft.getMinecraft().ingameGUI.getChatGUI().addTranslatedMessage("text.e4mc_minecraft.error");
                             }
                             throw new RuntimeException(datagramChannelFuture.cause());
                         }
@@ -392,7 +392,7 @@ public class QuiclimeSession {
                                         E4mcClient.LOGGER.info(cause);
                                         QuiclimeSession.this.state = State.UNHEALTHY;
                                         if (Services.AGNOS.isClient()) {
-                                            Minecraft.getInstance().gui.getChat().addMessage(new TranslatableComponent("text.e4mc_minecraft.error"));
+                                            Minecraft.getMinecraft().ingameGUI.getChatGUI().addTranslatedMessage("text.e4mc_minecraft.error");
                                         }
                                     }
 
@@ -410,7 +410,7 @@ public class QuiclimeSession {
                                         QuiclimeSession.this.state = State.UNHEALTHY;
                                         if (Services.AGNOS.isClient()) {
                                             E4mcClient.LOGGER.info(quicChannelFuture.cause());
-                                            Minecraft.getInstance().gui.getChat().addMessage(new TranslatableComponent("text.e4mc_minecraft.error"));
+                                            Minecraft.getMinecraft().ingameGUI.getChatGUI().addTranslatedMessage("text.e4mc_minecraft.error");
                                         }
                                         throw new RuntimeException(datagramChannelFuture.cause());
                                     }
@@ -430,27 +430,17 @@ public class QuiclimeSession {
                                                                 String domain = ((ControlMessageCodec.DomainAssignmentCompleteMessageClientbound) msg).domain;
                                                                 E4mcClient.LOGGER.info("Domain assigned: {}", domain);
                                                                 if (Services.AGNOS.isClient()) {
-                                                                    TextComponent domainComponent = new TextComponent(domain);
-                                                                    domainComponent.setStyle(Style.EMPTY
-                                                                            .withColor(ChatFormatting.GREEN)
-                                                                            .withClickEvent(new ClickEvent(ClickEvent.Action.COPY_TO_CLIPBOARD, domain))
-                                                                            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT,
-                                                                                    new TextComponent("Click to copy"))));
+                                                                    String domainTranslated = I18n.getStringParams("text.e4mc_minecraft.domainAssigned", "§a" + domain + "§f");
+                                                                    String stopTranslated = I18n.getString("text.e4mc_minecraft.clickToStop");
+                                                                    String fullMessage = domainTranslated + " §7" + stopTranslated;
 
-                                                                    TranslatableComponent stopComponent = new TranslatableComponent("text.e4mc_minecraft.clickToStop");
-                                                                    stopComponent.setStyle(Style.EMPTY
-                                                                            .withColor(ChatFormatting.GRAY)
-                                                                            .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, "/e4mc stop")));
-
-                                                                    TranslatableComponent baseMessage = new TranslatableComponent("text.e4mc_minecraft.domainAssigned", domainComponent);
-                                                                    baseMessage.append(stopComponent);
-
-                                                                    Minecraft.getInstance().gui.getChat().addMessage(baseMessage);
+                                                                    Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(fullMessage);
                                                                 }
                                                             }
+
                                                             if (msg instanceof ControlMessageCodec.RequestMessageBroadcastMessageClientbound) {
                                                                 if (Services.AGNOS.isClient()) {
-                                                                    Minecraft.getInstance().gui.getChat().addMessage(new TextComponent(((ControlMessageCodec.RequestMessageBroadcastMessageClientbound) msg).message));
+                                                                    Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(((ControlMessageCodec.RequestMessageBroadcastMessageClientbound) msg).message);
                                                                 }
                                                             }
                                                         }
@@ -461,7 +451,7 @@ public class QuiclimeSession {
                                             QuiclimeSession.this.state = State.UNHEALTHY;
                                             if (Services.AGNOS.isClient()) {
                                                 E4mcClient.LOGGER.info(it.cause());
-                                                Minecraft.getInstance().gui.getChat().addMessage(new TranslatableComponent("text.e4mc_minecraft.error"));
+                                                Minecraft.getMinecraft().ingameGUI.getChatGUI().addTranslatedMessage("text.e4mc_minecraft.error");
                                             }
                                             throw new RuntimeException(datagramChannelFuture.cause());
                                         }
@@ -480,7 +470,7 @@ public class QuiclimeSession {
             QuiclimeSession.this.state = State.UNHEALTHY;
             if (Services.AGNOS.isClient()) {
                 E4mcClient.LOGGER.info(e);
-                Minecraft.getInstance().gui.getChat().addMessage(new TranslatableComponent("text.e4mc_minecraft.error"));
+                Minecraft.getMinecraft().ingameGUI.getChatGUI().addTranslatedMessage("text.e4mc_minecraft.error");
             }
             throw new RuntimeException(e);
         }

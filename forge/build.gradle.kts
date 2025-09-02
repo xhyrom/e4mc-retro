@@ -22,8 +22,7 @@ unimined.minecraft {
     }
 
     mappings {
-        intermediary()
-        mojmap()
+        forgeBuiltinMCP(forgeVersion)
     }
 
     defaultRemapJar = true
@@ -36,6 +35,28 @@ repositories {
 dependencies {
     implementation(project(":common", configuration = "noRemap"))
     shadowBundle(project(":common", configuration = "noRemap"))
+
+    implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+        isTransitive = false
+    }
+    shadowBundle("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
+        isTransitive = false
+    }
+
+    annotationProcessor("org.ow2.asm:asm-debug-all:5.2")
+    annotationProcessor("com.google.guava:guava:32.1.2-jre")
+    annotationProcessor("com.google.code.gson:gson:2.8.9")
+    annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT")
+}
+
+tasks.withType(org.gradle.jvm.tasks.Jar::class) {
+    archiveBaseName.set(modId)
+    manifest.attributes.run {
+        this["FMLCorePluginContainsFMLMod"] = "true"
+        this["ForceLoadAsMod"] = "true"
+        this["TweakClass"] = "org.spongepowered.asm.launch.MixinTweaker"
+        this["MixinConfigs"] = "${modId}.mixins.json"
+    }
 }
 
 tasks.named<RemapJarTask>("remapJar") {

@@ -1,15 +1,14 @@
 package link.e4mc;
 
-import com.mojang.brigadier.CommandDispatcher;
 import link.e4mc.command.CommandE4mc;
 import link.e4mc.platform.Services;
-import net.minecraft.commands.CommandSourceStack;
-import net.minecraft.server.commands.BanListCommands;
-import net.minecraft.server.commands.BanPlayerCommands;
-import net.minecraft.server.commands.PardonCommand;
-import net.minecraft.server.commands.WhitelistCommand;
+import net.minecraft.command.*;
 import org.tinylog.Logger;
 import org.tinylog.TaggedLogger;
+
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class E4mcClient {
     public static final String MOD_ID = "e4mc_retro_minecraft";
@@ -22,14 +21,19 @@ public class E4mcClient {
         Config.INSTANCE.id();
     }
 
-    public static void registerCommands(CommandDispatcher<CommandSourceStack> dispatcher) {
+    public static List<CommandBase> commands() {
         if (Services.AGNOS.isClient() && Config.INSTANCE.restoreDedicatedCommands.value()) {
-            BanPlayerCommands.register(dispatcher);
-            BanListCommands.register(dispatcher);
-            PardonCommand.register(dispatcher);
-            WhitelistCommand.register(dispatcher);
+            return Arrays.asList(
+                    new CommandServerBan(),
+                    new CommandServerBanlist(),
+                    new CommandServerPardon(),
+                    new CommandServerWhitelist(),
+                    new CommandE4mc()
+            );
+        } else {
+            return Collections.singletonList(
+                    new CommandE4mc()
+            );
         }
-
-        CommandE4mc.register(dispatcher);
     }
 }
