@@ -2,12 +2,12 @@ const relays = {
   "ch-zh-1": {
     id: "ch-zh-1",
     host: "ch-zh1.retrolime.e4mc.xhyrom.dev",
-    port: 25575,
+    port: 25576,
   },
   "ch-zh-2": {
     id: "ch-zh-2",
     host: "ch-zh2.retrolime.e4mc.xhyrom.dev",
-    port: 25575,
+    port: 25576,
   },
 } as const;
 
