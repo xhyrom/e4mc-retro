@@ -31,4 +31,11 @@ public abstract class IntegratedServerMixin {
             E4mcClient.session.stop();
         }
     }
+
+    @Inject(method = "initiateShutdown", at = @At("HEAD"))
+    public void initiateShutdown(CallbackInfo ci) {
+        if (E4mcClient.session != null) {
+            E4mcClient.session.stop();
+        }
+    }
 }
