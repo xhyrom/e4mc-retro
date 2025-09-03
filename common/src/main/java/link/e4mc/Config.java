@@ -48,7 +48,7 @@ public class Config extends ReflectiveConfig {
     );
 
     public final TrackedValue<String> relayHost = this.value(
-        "ch-zh1.retrolime.e4mc.xhyrom.dev"
+        "ch-zh1.rl.e4mc.xhyrom.dev"
     );
     public final TrackedValue<Integer> relayPort = this.value(25575);
 
