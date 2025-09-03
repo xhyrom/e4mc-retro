@@ -42,7 +42,7 @@ subprojects {
         inputs.property("version", modVersion)
         inputs.property("mod_id", modId)
 
-        filesMatching(listOf("META-INF/mods.toml", "quilt.mod.json", "fabric.mod.json", "${modId}.*.mixins.json", "${modId}.mixins.json")) {
+        filesMatching(listOf("mcmod.info", "quilt.mod.json", "fabric.mod.json", "${modId}.*.mixins.json", "${modId}.mixins.json")) {
             expand(inputs.properties)
         }
     }

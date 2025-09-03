@@ -16,7 +16,7 @@
   "environment": "*",
   "entrypoints": {
     "main": [
-      "link.e4mc.E4mcClientFabric"
+      "link.e4mc.E4mcClientOrnithe"
     ]
   },
   "mixins": [

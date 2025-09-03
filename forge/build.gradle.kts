@@ -36,9 +36,12 @@ dependencies {
     implementation(project(":common", configuration = "noRemap"))
     shadowBundle(project(":common", configuration = "noRemap"))
 
-    implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
-        isTransitive = false
-    }
+    implementation("org.apache.logging.log4j:log4j-core:2.25.1")
+    implementation("org.apache.logging.log4j:log4j-api:2.25.1")
+    shadowBundle("org.apache.logging.log4j:log4j-core:2.25.1")
+    shadowBundle("org.apache.logging.log4j:log4j-api:2.25.1")
+
+    implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT")
     shadowBundle("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
         isTransitive = false
     }
@@ -46,7 +49,7 @@ dependencies {
     annotationProcessor("org.ow2.asm:asm-debug-all:5.2")
     annotationProcessor("com.google.guava:guava:32.1.2-jre")
     annotationProcessor("com.google.code.gson:gson:2.8.9")
-    annotationProcessor("org.spongepowered:mixin:0.8.5-SNAPSHOT")
+    annotationProcessor("org.spongepowered:mixin:0.7.11-SNAPSHOT")
 }
 
 tasks.withType(org.gradle.jvm.tasks.Jar::class) {
