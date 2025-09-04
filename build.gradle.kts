@@ -7,7 +7,7 @@ plugins {
     id("java")
     id("idea")
     id("me.modmuss50.mod-publish-plugin") version "0.8.4"
-    id("xyz.wagyourtail.unimined") version "1.4.2-SNAPSHOT" apply false
+    id("xyz.wagyourtail.unimined") version "1.3.12" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
 }
 
@@ -73,7 +73,6 @@ subprojects {
             relocate("org.tinylog", "link.e4mc.shadow.tinylog")
             relocate("com.electronwill.nightconfig", "link.e4mc.shadow.nightconfig")
             relocate("folk.sisby.kaleido", "link.e4mc.shadow.kaleido")
-            relocate("com.google.gson", "link.e4mc.shadow.gson")
 
             mergeServiceFiles()
         }

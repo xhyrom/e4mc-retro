@@ -1,5 +1,9 @@
 import org.gradle.kotlin.dsl.named
 import xyz.wagyourtail.unimined.api.minecraft.task.RemapJarTask
+import xyz.wagyourtail.unimined.internal.minecraft.MinecraftProvider
+import xyz.wagyourtail.unimined.internal.minecraft.patch.fabric.LegacyFabricMinecraftTransformer
+import xyz.wagyourtail.unimined.util.FinalizeOnRead
+import xyz.wagyourtail.unimined.util.LazyMutable
 
 plugins {
     idea
@@ -17,7 +21,7 @@ val shadowBundle: Configuration by configurations.creating
 unimined.minecraft {
     version(minecraftVersion)
 
-    ornitheFabric {
+    customPatcher(OrnitheFabricMinecraftTransformer(project, this as MinecraftProvider)) {
         loader(loaderVersion)
     }
 
@@ -29,10 +33,6 @@ unimined.minecraft {
 }
 
 dependencies {
-    for (module in unimined.osl(minecraftVersion, oslVersion)) {
-        "modImplementation"(module)
-    }
-
     implementation(project(":common", configuration = "noRemap"))
     shadowBundle(project(":common", configuration = "noRemap"))
 }
@@ -47,4 +47,20 @@ tasks.named<RemapJarTask>("remapJar") {
 
 tasks.build {
     dependsOn(tasks.named("remapJar"))
+}
+
+open class OrnitheFabricMinecraftTransformer(
+    project: Project,
+    provider: MinecraftProvider
+): LegacyFabricMinecraftTransformer(project, provider) {
+
+    override fun addIntermediaryMappings() {
+        provider.mappings {
+            calamus()
+        }
+    }
+
+    override var prodNamespace by FinalizeOnRead(LazyMutable {
+        provider.mappings.getNamespace("intermediary")
+    })
 }

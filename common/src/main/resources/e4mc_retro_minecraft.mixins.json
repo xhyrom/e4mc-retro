@@ -8,7 +8,6 @@
     "CommandServerBanMixin",
     "CommandServerPardonMixin",
     "CommandServerWhitelistMixin",
-    "IntegratedServerMixin",
     "netty.NativeLibraryLoaderMixin"
   ],
   "injectors": {

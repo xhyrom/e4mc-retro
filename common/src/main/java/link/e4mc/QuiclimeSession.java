@@ -55,7 +55,6 @@ import link.e4mc.platform.Services;
 import link.e4mc.util.SSLUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
-import org.lwjgl.Sys;
 
 public class QuiclimeSession {
 
