@@ -1,30 +1,25 @@
 const relays = {
-  "ch-zh-1": {
-    id: "ch-zh-1",
-    host: "ch-zh1.rl.e4mc.xhyrom.dev",
+  "de-fra-1": {
+    id: "de-fra-1",
+    host: "de-fra1.rl.e4mc.xhyrom.dev",
     port: 25575,
-  },
-  "ch-zh-2": {
-    id: "ch-zh-2",
-    host: "ch-zh2.rl.e4mc.xhyrom.dev",
-    port: 25575,
-  },
+  }
 } as const;
 
 const routingRules = {
   country: {
-    CH: ["ch-zh-1", "ch-zh-2"],
-    DE: ["ch-zh-1", "ch-zh-2"],
-    FR: ["ch-zh-1", "ch-zh-2"],
-    IT: ["ch-zh-1", "ch-zh-2"],
-    AT: ["ch-zh-1", "ch-zh-2"],
-    LI: ["ch-zh-1", "ch-zh-2"],
+    CH: ["de-fra-1"],
+    DE: ["de-fra-1"],
+    FR: ["de-fra-1"],
+    IT: ["de-fra-1"],
+    AT: ["de-fra-1"],
+    LI: ["de-fra-1"],
   },
   continent: {
-    EU: ["ch-zh-1", "ch-zh-2"],
+    EU: ["de-fra-1"],
   },
   default: {
-    pool: ["ch-zh-1", "ch-zh-2"],
+    pool: ["de-fra-1"],
   },
 } as const;
 
