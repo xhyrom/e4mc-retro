@@ -14,27 +14,28 @@ Simply install the mod, and Open to LAN as normal. A public domain will appear a
 
 ## Version Support
 
-| Version |                 e4mc Retro                 |            e4mc            |
-|---------|:------------------------------------------:|:--------------------------:|
-| 1.2.x   |                     ❌                      |             ❌              |
-| 1.3.x   |                     ❌                      |             ❌              |
-| 1.4.x   |                     ❌                      |             ❌              |
-| 1.5.x   |                     ❌                      |             ❌              |
-| 1.6.x   |                    ⚠️¹                     |             ❌              |
-| 1.7.x   |    ✅ _(Forge, Legacy Fabric, Ornithe)_     |             ❌              |
-| 1.8.x   |    ✅ _(Forge, Legacy Fabric, Ornithe)_     |             ❌              |
-| 1.9.x   |    ✅ _(Forge, Legacy Fabric, Ornithe)_     |             ❌              |
-| 1.10.x  |    ✅ _(Forge, Legacy Fabric, Ornithe)_     |             ❌              |
-| 1.11.x  |    ✅ _(Forge, Legacy Fabric, Ornithe)_     |             ❌              |
-| 1.12.x  |    ✅ _(Forge, Legacy Fabric, Ornithe)_     |             ❌              |
-| 1.13.x  | ✅ _(Forge, Legacy Fabric, Ornithe, Rift)_  |             ❌              |
-| 1.14.x  |    ✅ _(Forge, Fabric, Ornithe, Quilt)_     |             ❌              |
-| 1.15.x  |         ✅ _(Forge, Fabric, Quilt)_         |             ❌              |
-| 1.16.x  |         ✅ _(Forge, Fabric, Quilt)_         |             ❌              |
-| 1.17.x  |                     ❌                      | ✅ _(Forge, Fabric, Quilt)_ |
-| 1.18.x  |                     ❌                      | ✅ _(Forge, Fabric, Quilt)_ |
-| 1.19.x  |                     ❌                      | ✅ _(Forge, Fabric, Quilt)_ |
-| 1.20.x  |                     ❌                      | ✅ _(Forge, Fabric, Quilt)_ |
-| 1.21.x  |                     ❌                      | ✅ _(Forge, Fabric, Quilt)_ |
+| Version |                e4mc Retro                 |            e4mc            |
+|---------|:-----------------------------------------:|:--------------------------:|
+| 1.2.x   |                     ❌                     |             ❌              |
+| 1.3.x   |                     ❌                     |             ❌              |
+| 1.4.x   |                     ❌                     |             ❌              |
+| 1.5.x   |                     ❌                     |             ❌              |
+| 1.6.x   |                    ✅²                     |             ❌              |
+| 1.7.x   |    ✅ _(Forge, Legacy Fabric, Ornithe)_    |             ❌              |
+| 1.8.x   |    ✅ _(Forge, Legacy Fabric, Ornithe)_    |             ❌              |
+| 1.9.x   |    ✅ _(Forge, Legacy Fabric, Ornithe)_    |             ❌              |
+| 1.10.x  |    ✅ _(Forge, Legacy Fabric, Ornithe)_    |             ❌              |
+| 1.11.x  |    ✅ _(Forge, Legacy Fabric, Ornithe)_    |             ❌              |
+| 1.12.x  |    ✅ _(Forge, Legacy Fabric, Ornithe)_    |             ❌              |
+| 1.13.x  | ✅ _(Forge, Legacy Fabric, Ornithe, Rift)_ |             ❌              |
+| 1.14.x  |    ✅ _(Forge, Fabric, Ornithe, Quilt)_    |             ❌              |
+| 1.15.x  |        ✅ _(Forge, Fabric, Quilt)_         |             ❌              |
+| 1.16.x  |        ✅ _(Forge, Fabric, Quilt)_         |             ❌              |
+| 1.17.x  |                     ❌                     | ✅ _(Forge, Fabric, Quilt)_ |
+| 1.18.x  |                     ❌                     | ✅ _(Forge, Fabric, Quilt)_ |
+| 1.19.x  |                     ❌                     | ✅ _(Forge, Fabric, Quilt)_ |
+| 1.20.x  |                     ❌                     | ✅ _(Forge, Fabric, Quilt)_ |
+| 1.21.x  |                     ❌                     | ✅ _(Forge, Fabric, Quilt)_ |
 
 ¹ Currently in testing and development, not released yet. You can build it yourself or explore its progress in other branches within this repository.
+² Must launch with Java 8.
