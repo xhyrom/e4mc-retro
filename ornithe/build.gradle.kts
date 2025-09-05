@@ -13,7 +13,6 @@ plugins {
 
 val minecraftVersion: String = property("minecraft_version") as String
 val loaderVersion: String = property("fabric_loader_version") as String
-val oslVersion: String = property("ornithe_osl_version") as String
 val forgeVersion: String = property("forge_version") as String
 
 val shadowBundle: Configuration by configurations.creating
@@ -35,6 +34,10 @@ unimined.minecraft {
 dependencies {
     implementation(project(":common", configuration = "noRemap"))
     shadowBundle(project(":common", configuration = "noRemap"))
+
+    "modImplementation"("net.fabricmc:fabric-loader:${loaderVersion}")
+    implementation("net.ornithemc.osl:core:0.6.0")
+    "modImplementation"("net.ornithemc.osl:lifecycle-events:0.5.6+mc13w16a-04192037-mc1.6.4")
 }
 
 tasks.named<RemapJarTask>("remapJar") {
@@ -53,14 +56,19 @@ open class OrnitheFabricMinecraftTransformer(
     project: Project,
     provider: MinecraftProvider
 ): LegacyFabricMinecraftTransformer(project, provider) {
-
     override fun addIntermediaryMappings() {
+        project.unimined.ornitheMaven()
+
         provider.mappings {
-            calamus()
+            mapping("net.ornithemc:calamus-intermediary:1.6.4:v2", "calamus") {
+                mapNamespace("intermediary", "calamus")
+                outputs("calamus", false) { listOf("official") }
+            }
         }
     }
 
     override var prodNamespace by FinalizeOnRead(LazyMutable {
-        provider.mappings.getNamespace("intermediary")
+        println(provider.mappings.getNamespaces())
+        provider.mappings.getNamespace("calamus")
     })
 }

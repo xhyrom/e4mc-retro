@@ -1,7 +1,8 @@
-package link.e4mc;
+package dev.xhyrom;
 
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import link.e4mc.E4mcClient;
 import net.minecraft.command.CommandBase;
 import net.minecraftforge.client.ClientCommandHandler;
 

@@ -7,7 +7,7 @@ plugins {
     id("java")
     id("idea")
     id("me.modmuss50.mod-publish-plugin") version "0.8.4"
-    id("xyz.wagyourtail.unimined") version "1.3.12" apply false
+    id("xyz.wagyourtail.unimined") version "1.3.15" apply false
     id("com.github.johnrengelman.shadow") version "8.1.1" apply false
 }
 

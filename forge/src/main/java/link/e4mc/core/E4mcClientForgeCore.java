@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @SuppressWarnings("unused")
-@IFMLLoadingPlugin.TransformerExclusions({"link.e4mc.core.mixin"})
+@IFMLLoadingPlugin.TransformerExclusions({"link.e4mc.core", "dev.xhyrom"})
 @IFMLLoadingPlugin.SortingIndex(Integer.MIN_VALUE + 2)
 public class E4mcClientForgeCore implements IFMLLoadingPlugin {
     public E4mcClientForgeCore() {}

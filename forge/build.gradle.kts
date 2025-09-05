@@ -30,8 +30,8 @@ dependencies {
     implementation(project(":common", configuration = "noRemap"))
     shadowBundle(project(":common", configuration = "noRemap"))
 
-    implementation("org.ow2.asm:asm:5.2")
-    shadowBundle("org.ow2.asm:asm:5.2")
+    implementation("org.ow2.asm:asm-all:5.2")
+    shadowBundle("org.ow2.asm:asm-all:5.2")
 
     implementation("org.spongepowered:mixin:0.7.11-SNAPSHOT") {
         exclude(module = "launchwrapper")
@@ -57,7 +57,7 @@ tasks.withType(org.gradle.jvm.tasks.Jar::class) {
     manifest.attributes.run {
         this["FMLCorePluginContainsFMLMod"] = "true"
         this["FMLCorePlugin"] = "link.e4mc.core.E4mcClientForgeCore"
-        this["TweakOrder"] = "-1000"
+        this["TweakOrder"] = "-100000"
         this["ForceLoadAsMod"] = "true"
         this["TweakClass"] = "org.spongepowered.asm.launch.MixinTweaker"
         this["MixinConfigs"] = "${modId}.mixins.json"
