@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.3
+
+- **Fixed** translations for versions <=1.10.2 where the language files were not properly loaded.
+
 ## 1.0.2
 
 - **Added** a new configuration option: `useInsecureTLS`
