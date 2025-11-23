@@ -1,4 +1,5 @@
 gradlew* linguist-vendored
 gradle/wrapper/* linguist-vendored
+retrolime/src/wordlist.rs linguist-generated
 *.bat text eol=crlf
 
