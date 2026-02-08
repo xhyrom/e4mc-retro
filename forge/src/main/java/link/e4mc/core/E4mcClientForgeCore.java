@@ -1,28 +1,36 @@
 package link.e4mc.core;
 
+import cpw.mods.fml.common.asm.ASMTransformer;
 import cpw.mods.fml.relauncher.IFMLLoadingPlugin;
+import net.minecraft.launchwrapper.ITweaker;
 import net.minecraft.launchwrapper.Launch;
+import net.minecraft.launchwrapper.LaunchClassLoader;
 import org.spongepowered.asm.launch.MixinBootstrap;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @SuppressWarnings("unused")
 @IFMLLoadingPlugin.TransformerExclusions({"link.e4mc.core", "dev.xhyrom"})
-@IFMLLoadingPlugin.SortingIndex(Integer.MIN_VALUE + 2)
+//@IFMLLoadingPlugin.SortingIndex(Integer.MIN_VALUE + 2)
 public class E4mcClientForgeCore implements IFMLLoadingPlugin {
     public E4mcClientForgeCore() {}
 
     static {
         fixMixinClasspathOrder();
+        try {
+            Field f = LaunchClassLoader.class.getDeclaredField("transformerExceptions");
+            f.setAccessible(true);
+            Set<String> exs = (Set<String>) f.get(Launch.classLoader);
+            exs.remove("org.objectweb.asm.");
+            f.set(Launch.classLoader, exs);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         MixinBootstrap.init();
-        org.spongepowered.asm.mixin.Mixins.addConfiguration("e4mc_retro_minecraft.mixins.json");
     }
 
     private static void fixMixinClasspathOrder() {
@@ -54,6 +62,8 @@ public class E4mcClientForgeCore implements IFMLLoadingPlugin {
 
     @Override
     public String[] getASMTransformerClass() {
+        Launch.classLoader.registerTransformer("link.e4mc.core.FMLTransformer");
+        org.spongepowered.asm.mixin.Mixins.addConfiguration("e4mc_retro_minecraft.mixins.json");
         return new String[0];
     }
 

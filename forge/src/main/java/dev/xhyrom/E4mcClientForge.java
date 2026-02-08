@@ -1,10 +1,11 @@
 package dev.xhyrom;
 
 import cpw.mods.fml.common.Mod;
-import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import link.e4mc.E4mcClient;
 import net.minecraft.command.CommandBase;
-import net.minecraftforge.client.ClientCommandHandler;
+import net.minecraft.command.ServerCommandManager;
+import net.minecraftforge.event.ForgeSubscribe;
 
 @Mod(modid = E4mcClient.MOD_ID, useMetadata = true, acceptedMinecraftVersions = "*")
 public class E4mcClientForge {
@@ -12,10 +13,10 @@ public class E4mcClientForge {
         E4mcClient.init();
     }
 
-    @Mod.EventHandler
-    public void init(FMLInitializationEvent event) {
+    @ForgeSubscribe
+    public void init(FMLServerStartingEvent event) {
         for (CommandBase command : E4mcClient.commands()) {
-            ClientCommandHandler.instance.registerCommand(command);
+            ((ServerCommandManager) event.getServer().getCommandManager()).registerCommand(command);
         }
     }
 }

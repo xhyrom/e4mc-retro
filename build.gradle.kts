@@ -132,42 +132,6 @@ publishMods {
         modLoaders.add("forge")
     }
 
-    modrinth("modrinthFabric") {
-        from(mrOptions)
-
-        val proj = project(":fabric")
-        val remapJarProvider = proj.provider {
-            proj.tasks.named<RemapJarTask>("remapJar")
-                .flatMap { it.asJar.archiveFile }
-        }.flatMap { it }
-
-        file.set(remapJarProvider)
-        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
-
-        modLoaders.add("legacy-fabric")
-
-        requires("legacy-fabric-api")
-    }
-
-
-    modrinth("modrinthOrnithe") {
-        from(mrOptions)
-
-        val proj = project(":ornithe")
-        val remapJarProvider = proj.provider {
-            proj.tasks.named<RemapJarTask>("remapJar")
-                .flatMap { it.asJar.archiveFile }
-        }.flatMap { it }
-
-        file.set(remapJarProvider)
-        displayName = "e4mc Retro ${proj.name.uppercaseFirstChar()} ${modVersion}+${supportedMinecraftVersions}"
-
-        modLoaders.add("ornithe")
-        requires {
-            slug = "osl"
-        }
-    }
-
     modrinth("modrinthForge") {
         from(mrOptions)
 

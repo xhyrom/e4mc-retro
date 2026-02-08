@@ -7,7 +7,6 @@ import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.server.MinecraftServer;
-import net.minecraft.util.ChatMessageComponent;
 import org.jetbrains.annotations.NotNull;
 
 public class CommandE4mc extends CommandBase {
@@ -39,9 +38,9 @@ public class CommandE4mc extends CommandBase {
             case "stop":
                 if ((E4mcClient.session != null) && (E4mcClient.session.state != QuiclimeSession.State.STOPPED)) {
                     E4mcClient.session.stop();
-                    sender.sendChatToPlayer(ChatMessageComponent.createFromTranslationKey("text.e4mc_minecraft.closeServer"));
+                    sender.sendChatToPlayer(sender.translateString("text.e4mc_minecraft.closeServer"));
                 } else {
-                    sender.sendChatToPlayer(ChatMessageComponent.createFromTranslationKey( "text.e4mc_minecraft.serverAlreadyClosed"));
+                    sender.sendChatToPlayer(sender.translateString( "text.e4mc_minecraft.serverAlreadyClosed"));
                 }
                 break;
             case "restart":
@@ -50,7 +49,7 @@ public class CommandE4mc extends CommandBase {
                     E4mcClient.session = new QuiclimeSession();
                     E4mcClient.session.startAsync();
                 } else {
-                    sender.sendChatToPlayer(ChatMessageComponent.createFromTranslationKey("text.e4mc_minecraft.serverAlreadyClosed"));
+                    sender.sendChatToPlayer(sender.translateString("text.e4mc_minecraft.serverAlreadyClosed"));
                 }
                 break;
             default:

@@ -56,8 +56,6 @@ tasks.withType(org.gradle.jvm.tasks.Jar::class) {
     archiveBaseName.set(modId)
     manifest.attributes.run {
         this["FMLCorePluginContainsFMLMod"] = "true"
-        this["FMLCorePlugin"] = "link.e4mc.core.E4mcClientForgeCore"
-        this["TweakOrder"] = "-100000"
         this["ForceLoadAsMod"] = "true"
         this["TweakClass"] = "org.spongepowered.asm.launch.MixinTweaker"
         this["MixinConfigs"] = "${modId}.mixins.json"

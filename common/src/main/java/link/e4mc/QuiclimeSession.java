@@ -54,7 +54,7 @@ import javax.net.ssl.SSLException;
 import link.e4mc.platform.Services;
 import link.e4mc.util.SSLUtil;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.I18n;
+import net.minecraft.util.StringTranslate;
 
 public class QuiclimeSession {
 
@@ -595,15 +595,13 @@ public class QuiclimeSession {
                                                                 if (
                                                                     Services.AGNOS.isClient()
                                                                 ) {
-                                                                    String domainTranslated =
-                                                                        I18n.getStringParams(
+                                                                    String domainTranslated = StringTranslate.getInstance().translateKeyFormat(
                                                                             "text.e4mc_minecraft.domainAssigned",
                                                                             "§a" +
                                                                             domain +
                                                                             "§f"
                                                                         );
-                                                                    String stopTranslated =
-                                                                        I18n.getString(
+                                                                    String stopTranslated = StringTranslate.getInstance().translateKey(
                                                                             "text.e4mc_minecraft.clickToStop"
                                                                         );
                                                                     String fullMessage =

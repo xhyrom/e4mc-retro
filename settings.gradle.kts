@@ -24,9 +24,7 @@ rootProject.name = "e4mc-retro"
 sequenceOf(
     "neth",
     "common",
-    "fabric",
     "forge",
-    "ornithe"
 ).forEach {
     include(it)
 }
