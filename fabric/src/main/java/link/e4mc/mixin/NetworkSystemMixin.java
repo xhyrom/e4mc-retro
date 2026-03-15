@@ -6,7 +6,6 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ServerChannel;
 import link.e4mc.E4mcClient;
-import link.e4mc.session.QuiclimeSession;
 import net.minecraft.network.NetworkSystem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
