@@ -10,7 +10,7 @@ import net.minecraft.util.text.event.HoverEvent;
 
 public class CloudflaredHostSession implements E4mcSession {
     private CloudflaredWrapper wrapper;
-    private State state = State.STARTING;
+    private volatile State state = State.STARTING;
 
     @Override
     public void startAsync() {
@@ -36,6 +36,12 @@ public class CloudflaredHostSession implements E4mcSession {
 
                     TextComponentTranslation baseMessage = new TextComponentTranslation("text.e4mc_minecraft.domainAssigned", domainComponent);
                     Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(baseMessage);
+
+                    TextComponentTranslation warningMessage = new TextComponentTranslation("text.e4mc_minecraft.cloudflaredWarning");
+                    warningMessage.setStyle(new Style()
+                            .setColor(TextFormatting.YELLOW));
+
+                    Minecraft.getMinecraft().ingameGUI.getChatGUI().printChatMessage(warningMessage);
                 });
             }
         });

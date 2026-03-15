@@ -2,7 +2,6 @@ package link.e4mc.command;
 
 import link.e4mc.E4mcClient;
 import link.e4mc.session.E4mcSession;
-import link.e4mc.session.QuiclimeSession;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
