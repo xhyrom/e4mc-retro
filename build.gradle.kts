@@ -44,7 +44,7 @@ subprojects {
         }
     }
 
-    if (name != "common" && name != "neth") {
+    if (name != "common" && name != "neth" && name != "cloudflared") {
         sourceSets.main {
             output.setResourcesDir(sourceSets.main.flatMap { it.java.classesDirectory })
             resources {

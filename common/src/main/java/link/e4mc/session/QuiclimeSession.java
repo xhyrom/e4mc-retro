@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package link.e4mc;
+package link.e4mc.session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -37,6 +37,8 @@ import dev.xhyrom.e4mc.shadow.io.netty.channel.socket.nio.NioSocketChannel;
 import dev.xhyrom.e4mc.shadow.io.netty.handler.codec.ByteToMessageCodec;
 import dev.xhyrom.e4mc.shadow.io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import dev.xhyrom.e4mc.shadow.io.netty.incubator.codec.quic.*;
+import link.e4mc.Config;
+import link.e4mc.E4mcClient;
 import link.e4mc.platform.Services;
 import link.e4mc.util.SSLUtil;
 import net.minecraft.client.Minecraft;
@@ -59,7 +61,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 import java.util.function.Consumer;
 
-public class QuiclimeSession {
+public class QuiclimeSession implements E4mcSession {
     private static final Gson gson = new Gson();
 
     private static class ControlMessageCodec extends ByteToMessageCodec<ControlMessageCodec.ControlMessage> {
@@ -241,13 +243,6 @@ public class QuiclimeSession {
     }
 
     public State state = State.STARTING;
-    public enum State {
-        STARTING,
-        STARTED,
-        UNHEALTHY,
-        STOPPING,
-        STOPPED
-    }
 
     private static class BrokerResponse {
         String id;
@@ -502,5 +497,10 @@ public class QuiclimeSession {
                     group.shutdownGracefully().addListener(c -> state = State.STOPPED);
                 })
         );
+    }
+
+    @Override
+    public State getState() {
+        return state;
     }
 }
