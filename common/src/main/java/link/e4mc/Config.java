@@ -47,7 +47,7 @@ public class Config extends ReflectiveConfig {
     @Comment("The backend service to use for hosting your LAN server.\n" +
             "Note: CLOUDFLARED requires connecting players to also have this mod installed.\n" +
             "Valid options: QUICLIME, CLOUDFLARED")
-    public final TrackedValue<Backend> backend = this.value(Backend.CLOUDFLARED);
+    public final TrackedValue<Backend> backend = this.value(Backend.QUICLIME);
 
     @Comment("Disables TLS certificate validation for relay connections.\n"
             + "Use this only as a last resort if you're experiencing SSL certificate errors.\n"
