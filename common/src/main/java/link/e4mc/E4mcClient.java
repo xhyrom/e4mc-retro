@@ -51,7 +51,7 @@ public class E4mcClient {
     }
 
     public static void startHostSession() {
-        if (Config.INSTANCE.protocol.value() == Config.Backend.CLOUDFLARED) {
+        if (Config.INSTANCE.backend.value() == Config.Backend.CLOUDFLARED) {
             session = new CloudflaredHostSession();
         } else {
             session = new QuiclimeSession();
