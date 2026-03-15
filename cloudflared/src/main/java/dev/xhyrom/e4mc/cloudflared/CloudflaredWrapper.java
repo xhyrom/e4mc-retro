@@ -5,7 +5,6 @@ import java.net.URL;
 import java.nio.file.*;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.TimeUnit;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,32 +35,81 @@ public class CloudflaredWrapper {
         return cacheDir;
     }
 
-    public static void init() throws IOException {
-        if (binaryFile != null && binaryFile.exists()) return;
+    private static File findInPath(String executableName) {
+        String pathEnv = System.getenv("PATH");
+        if (pathEnv == null || pathEnv.isEmpty()) {
+            return null;
+        }
+
+        for (String pathStr : pathEnv.split(File.pathSeparator)) {
+            File exeFile = new File(pathStr, executableName);
+            if (exeFile.isFile() && exeFile.canExecute()) {
+                return exeFile;
+            }
+        }
+        return null;
+    }
+
+    public static void init() throws Exception {
+        if (binaryFile != null && binaryFile.exists() && binaryFile.canExecute()) return;
 
         String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
         String arch = System.getProperty("os.arch").toLowerCase(Locale.ROOT);
 
-        String binaryName = "cloudflared" + (os.contains("win") ? ".exe" : "");
-        String downloadUrl = "https://github.com/cloudflare/cloudflared/releases/latest/download/";
+        boolean isWin = os.contains("win");
+        boolean isMac = os.contains("mac");
 
-        if (os.contains("win")) {
-            downloadUrl += arch.contains("64") ? "cloudflared-windows-amd64.exe" : "cloudflared-windows-386.exe";
-        } else if (os.contains("mac")) {
-            downloadUrl += "cloudflared-darwin-amd64";
-        } else {
-            downloadUrl += (arch.contains("aarch64") || arch.contains("arm")) ? "cloudflared-linux-arm64" : "cloudflared-linux-amd64";
+        String binaryName = "cloudflared" + (isWin ? ".exe" : "");
+
+        File systemBinary = findInPath(binaryName);
+        if (systemBinary != null) {
+            binaryFile = systemBinary;
+            return;
         }
 
-        binaryFile = new File(getCacheDir(), binaryName);
+        File binDir = getCacheDir();
+        binaryFile = new File(binDir, binaryName);
 
-        if (!binaryFile.exists()) {
+        if (binaryFile.exists() && binaryFile.canExecute()) {
+            return;
+        }
+
+        String assetName = "cloudflared-";
+        if (isWin) {
+            assetName += "windows-" + (arch.contains("64") ? "amd64.exe" : "386.exe");
+        } else if (isMac) {
+            assetName += "darwin-" + ((arch.contains("aarch64") || arch.contains("arm")) ? "arm64.tgz" : "amd64.tgz");
+        } else {
+            assetName += "linux-";
+            if (arch.contains("aarch64") || arch.contains("arm64")) {
+                assetName += "arm64";
+            } else if (arch.contains("arm")) {
+                assetName += "arm";
+            } else if (arch.contains("64")) {
+                assetName += "amd64";
+            } else {
+                assetName += "386";
+            }
+        }
+
+        String downloadUrl = "https://github.com/cloudflare/cloudflared/releases/latest/download/" + assetName;
+
+        if (isMac) {
+            File tgzFile = new File(binDir, assetName);
+            try (InputStream in = new URL(downloadUrl).openStream()) {
+                Files.copy(in, tgzFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            }
+
+            Process tarProcess = new ProcessBuilder("tar", "-xzf", tgzFile.getAbsolutePath(), "-C", binDir.getAbsolutePath()).start();
+            tarProcess.waitFor();
+            tgzFile.delete();
+        } else {
             try (InputStream in = new URL(downloadUrl).openStream()) {
                 Files.copy(in, binaryFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
             }
-
-            binaryFile.setExecutable(true);
         }
+
+        binaryFile.setExecutable(true);
     }
 
     public CompletableFuture<String> startHostTunnel(int localPort) {
@@ -87,7 +135,7 @@ public class CloudflaredWrapper {
                 } catch (IOException e) {
                     if (!future.isDone()) future.completeExceptionally(e);
                 }
-            }, "e4mc-retro_cloudflared-host-tunnel-reader");
+            }, "Cloudflared-Host-Tunnel-Reader");
 
             readerThread.setDaemon(true);
             readerThread.start();
@@ -103,29 +151,29 @@ public class CloudflaredWrapper {
                     binaryFile.getAbsolutePath(),
                     "access", "tcp", "--hostname", targetDomain, "--url", "127.0.0.1:" + localPort
             );
-
             pb.redirectErrorStream(true);
             currentProcess = pb.start();
 
             Thread readerThread = new Thread(() -> {
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(currentProcess.getInputStream()))) {
-                    while (reader.readLine() != null) {}
+                    while (reader.readLine() != null) {
+                        // Gobble output
+                    }
                 } catch (IOException ignored) {}
-            }, "e4mc-retro_cloudflared-client-proxy-reader-" + localPort);
+            }, "Cloudflared-Client-Proxy-Reader-" + localPort);
 
             readerThread.setDaemon(true);
             readerThread.start();
         } catch (Exception e) {
-            throw new RuntimeException("failed to start Cloudflared client proxy", e);
+            throw new RuntimeException("Failed to start Cloudflared client proxy", e);
         }
     }
 
     public void stop() {
         if (currentProcess != null && currentProcess.isAlive()) {
             currentProcess.destroy();
-
             try {
-                if (!currentProcess.waitFor(1, TimeUnit.SECONDS)) {
+                if (!currentProcess.waitFor(1, java.util.concurrent.TimeUnit.SECONDS)) {
                     currentProcess.destroyForcibly();
                 }
             } catch (InterruptedException e) {
