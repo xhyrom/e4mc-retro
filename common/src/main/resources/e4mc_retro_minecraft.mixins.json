@@ -13,7 +13,8 @@
     "WorldClientMixin"
   ],
   "client": [
-    "PlayerListMixin"
+    "PlayerListMixin",
+    "ServerAddressMixin"
   ],
   "injectors": {
     "defaultRequire": 1

@@ -6,7 +6,7 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ServerChannel;
 import link.e4mc.E4mcClient;
-import link.e4mc.QuiclimeSession;
+import link.e4mc.session.QuiclimeSession;
 import net.minecraft.network.NetworkSystem;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -53,9 +53,7 @@ public abstract class NetworkSystemMixin {
                     E4mcClient.LOGGER.info("e4mc local TCP relay listening on " + socketAddress);
 
                     E4mcClient.localRelayPort = socketAddress.getPort();
-
-                    E4mcClient.session = new QuiclimeSession();
-                    E4mcClient.session.startAsync();
+                    E4mcClient.startHostSession();
                 } else {
                     E4mcClient.LOGGER.error("Failed to bind e4mc local relay", f.cause());
                 }
