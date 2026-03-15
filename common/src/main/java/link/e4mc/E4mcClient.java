@@ -30,14 +30,18 @@ public class E4mcClient {
 
     private static final Map<String, Integer> activeProxies = new ConcurrentHashMap<>();
     private static final Map<String, CloudflaredWrapper> activeProxyProcesses = new ConcurrentHashMap<>();
+    private static boolean cloudflaredAvailable = false;
 
     public static void init() {
         Config.INSTANCE.id();
 
         try {
             CloudflaredWrapper.init();
+            cloudflaredAvailable = true;
         } catch (Exception e) {
             LOGGER.error(e, "failed to initialize cloudflared");
+            LOGGER.error("cloudflared backend will be disabled; falling back to quiclime.");
+            cloudflaredAvailable = false;
         }
 
         Runtime.getRuntime().addShutdownHook(new Thread(() -> {
@@ -52,7 +56,12 @@ public class E4mcClient {
 
     public static void startHostSession() {
         if (Config.INSTANCE.backend.value() == Config.Backend.CLOUDFLARED) {
-            session = new CloudflaredHostSession();
+            if (cloudflaredAvailable) {
+                session = new CloudflaredHostSession();
+            } else {
+                LOGGER.error("cloudflared backend selected in config, but cloudflared is not available. falling back to quiclime.");
+                session = new QuiclimeSession();
+            }
         } else {
             session = new QuiclimeSession();
         }
@@ -61,6 +70,11 @@ public class E4mcClient {
     }
 
     public static int getOrCreateClientProxy(String host) {
+        if (!cloudflaredAvailable) {
+            LOGGER.error("cannot create cloudflared client proxy for host {} because cloudflared is not available.", host);
+            return 25565;
+        }
+
         return activeProxies.computeIfAbsent(host, targetHost -> {
             try (ServerSocket s = new ServerSocket(0)) {
                 int port = s.getLocalPort();
@@ -70,9 +84,9 @@ public class E4mcClient {
                 activeProxyProcesses.put(targetHost, wrapper);
                 return port;
             } catch (Exception e) {
-                LOGGER.error(e, "failed to allocate port for cloudflared proxy on host: {}", targetHost);
-
-                return 25565;
+                throw new IllegalStateException(
+                        "failed to allocate port for cloudflared proxy on host: " + targetHost, e
+                );
             }
         });
     }

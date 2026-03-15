@@ -3,6 +3,8 @@ package dev.xhyrom.e4mc.cloudflared;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.*;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
@@ -11,6 +13,17 @@ import java.util.regex.Pattern;
 public class CloudflaredWrapper {
     private static File binaryFile;
     private Process currentProcess;
+
+    private static final String CLOUDFLARED_VERSION = "2026.3.0";
+
+    private static final String SHA256_WINDOWS_AMD64 = "59b12880b24af581cf5b1013db601c7d843b9b097e9c78aa5957c7f39f741885";
+    private static final String SHA256_WINDOWS_386   = "e00a9e9fed12f8a8f5703539c4662750dd5472d35c16dcbbdc5869f3fe5e238b";
+    private static final String SHA256_MACOS_AMD64   = "b91dbec79a3e3809d5508b96d8b0bdfbf3ad7d51f858200228fa3e57100580d9";
+    private static final String SHA256_MACOS_ARM64   = "633cee0fd41fd2020e17498beecc54811bf4fc99f891c080dc9343eb0f449c60";
+    private static final String SHA256_LINUX_AMD64   = "4a9e50e6d6d798e90fcd01933151a90bf7edd99a0a55c28ad18f2e16263a5c30";
+    private static final String SHA256_LINUX_ARM64   = "0755ba4cbab59980e6148367fcf53a8f3ec85a97deefd63c2420cf7850769bee";
+    private static final String SHA256_LINUX_ARM     = "ca16ed5253373846f7d366d591669d0e868e0724e35599abad2c8b2bc2340cfa";
+    private static final String SHA256_LINUX_386     = "7d59f6ef7b4c255edd88187c74d2b4ecd895b6f5c4aca2cae0c4411eacebcbbd";
 
     private static File getCacheDir() {
         String os = System.getProperty("os.name").toLowerCase(Locale.ROOT);
@@ -50,6 +63,14 @@ public class CloudflaredWrapper {
         return null;
     }
 
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder(bytes.length * 2);
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
     public static void init() throws Exception {
         if (binaryFile != null && binaryFile.exists() && binaryFile.canExecute()) return;
 
@@ -75,38 +96,78 @@ public class CloudflaredWrapper {
         }
 
         String assetName = "cloudflared-";
+        String expectedSha256 = null;
+
         if (isWin) {
-            assetName += "windows-" + (arch.contains("64") ? "amd64.exe" : "386.exe");
+            if (arch.contains("64")) {
+                assetName += "windows-amd64.exe";
+                expectedSha256 = SHA256_WINDOWS_AMD64;
+            } else {
+                assetName += "windows-386.exe";
+                expectedSha256 = SHA256_WINDOWS_386;
+            }
         } else if (isMac) {
-            assetName += "darwin-" + ((arch.contains("aarch64") || arch.contains("arm")) ? "arm64.tgz" : "amd64.tgz");
+            if (arch.contains("aarch64") || arch.contains("arm")) {
+                assetName += "darwin-arm64.tgz";
+                expectedSha256 = SHA256_MACOS_ARM64;
+            } else {
+                assetName += "darwin-amd64.tgz";
+                expectedSha256 = SHA256_MACOS_AMD64;
+            }
         } else {
             assetName += "linux-";
             if (arch.contains("aarch64") || arch.contains("arm64")) {
                 assetName += "arm64";
+                expectedSha256 = SHA256_LINUX_ARM64;
             } else if (arch.contains("arm")) {
                 assetName += "arm";
+                expectedSha256 = SHA256_LINUX_ARM;
             } else if (arch.contains("64")) {
                 assetName += "amd64";
+                expectedSha256 = SHA256_LINUX_AMD64;
             } else {
                 assetName += "386";
+                expectedSha256 = SHA256_LINUX_386;
             }
         }
 
-        String downloadUrl = "https://github.com/cloudflare/cloudflared/releases/latest/download/" + assetName;
+        String downloadUrl = "https://github.com/cloudflare/cloudflared/releases/download/" + CLOUDFLARED_VERSION + "/" + assetName;
+        File downloadDest = isMac ? new File(binDir, assetName) : binaryFile;
+
+        Path tempFile = Files.createTempFile("cloudflared-" + CLOUDFLARED_VERSION + "-", ".tmp");
+        try (InputStream in = new BufferedInputStream(new URL(downloadUrl).openStream());
+             OutputStream out = new BufferedOutputStream(Files.newOutputStream(tempFile, StandardOpenOption.TRUNCATE_EXISTING))) {
+            MessageDigest digest;
+            try {
+                digest = MessageDigest.getInstance("SHA-256");
+            } catch (NoSuchAlgorithmException e) {
+                throw new IOException("SHA-256 algorithm not available", e);
+            }
+            byte[] buffer = new byte[8192];
+            int read;
+            while ((read = in.read(buffer)) != -1) {
+                digest.update(buffer, 0, read);
+                out.write(buffer, 0, read);
+            }
+            out.flush();
+            String actualSha256 = bytesToHex(digest.digest());
+
+            if (!actualSha256.equalsIgnoreCase(expectedSha256)) {
+                Files.deleteIfExists(tempFile);
+                throw new IOException("cloudflared binary checksum verification failed. Expected " + expectedSha256
+                        + " but got " + actualSha256);
+            }
+
+            Files.move(tempFile, downloadDest.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+        } catch (IOException e) {
+            Files.deleteIfExists(tempFile);
+            throw e;
+        }
 
         if (isMac) {
-            File tgzFile = new File(binDir, assetName);
-            try (InputStream in = new URL(downloadUrl).openStream()) {
-                Files.copy(in, tgzFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            }
-
-            Process tarProcess = new ProcessBuilder("tar", "-xzf", tgzFile.getAbsolutePath(), "-C", binDir.getAbsolutePath()).start();
+            Process tarProcess = new ProcessBuilder("tar", "-xzf", downloadDest.getAbsolutePath(), "-C", binDir.getAbsolutePath()).start();
             tarProcess.waitFor();
-            tgzFile.delete();
-        } else {
-            try (InputStream in = new URL(downloadUrl).openStream()) {
-                Files.copy(in, binaryFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            }
+            downloadDest.delete();
         }
 
         binaryFile.setExecutable(true);
@@ -156,9 +217,7 @@ public class CloudflaredWrapper {
 
             Thread readerThread = new Thread(() -> {
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(currentProcess.getInputStream()))) {
-                    while (reader.readLine() != null) {
-                        // Gobble output
-                    }
+                    while (reader.readLine() != null) {}
                 } catch (IOException ignored) {}
             }, "Cloudflared-Client-Proxy-Reader-" + localPort);
 

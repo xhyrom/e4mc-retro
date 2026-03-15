@@ -11,7 +11,7 @@ public class ServerAddressMixin {
     @ModifyVariable(method = "fromString", at = @At("HEAD"), argsOnly = true)
     private static String modifyAddressString(String addrString) {
         if (addrString != null && addrString.startsWith("cloudflared://")) {
-            String targetHost = addrString.substring("cloudflared://".length());
+            String targetHost = addrString.substring("cloudflared://".length()).trim();
 
             int localPort = E4mcClient.getOrCreateClientProxy(targetHost);
             return "127.0.0.1:" + localPort;
