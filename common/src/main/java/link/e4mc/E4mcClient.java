@@ -26,6 +26,7 @@ public class E4mcClient {
 
     private static final Map<String, Integer> activeProxies = new ConcurrentHashMap<>();
     private static final Map<String, CloudflaredWrapper> activeProxyProcesses = new ConcurrentHashMap<>();
+    private static final int MAX_ACTIVE_PROXIES = 16;
     private static boolean cloudflaredAvailable = false;
 
     public static void init() {
@@ -44,10 +45,34 @@ public class E4mcClient {
             if (session != null)
                 session.stop();
 
-            for (CloudflaredWrapper wrapper : activeProxyProcesses.values()) {
-                wrapper.stop();
-            }
+            cleanupClientProxies();
         }, "e4mc-retro-shutdown-hook"));
+    }
+
+    private static void ensureProxyCapacity() {
+        if (activeProxies.size() >= MAX_ACTIVE_PROXIES) {
+            evictOldestProxy();
+        }
+    }
+
+    private static void evictOldestProxy() {
+        synchronized (activeProxies) {
+            if (activeProxies.isEmpty()) {
+                return;
+            }
+
+            String hostToEvict = activeProxies.keySet().iterator().next();
+            activeProxies.remove(hostToEvict);
+            CloudflaredWrapper wrapper = activeProxyProcesses.remove(hostToEvict);
+
+            if (wrapper != null) {
+                try {
+                    wrapper.stop();
+                } catch (Exception e) {
+                    LOGGER.error(e, "failed to stop cloudflared client proxy for host {} during eviction", hostToEvict);
+                }
+            }
+        }
     }
 
     public static void startHostSession() {
@@ -65,11 +90,28 @@ public class E4mcClient {
         session.startAsync();
     }
 
+    public static void cleanupClientProxies() {
+        for (CloudflaredWrapper wrapper : activeProxyProcesses.values()) {
+            try {
+                wrapper.stop();
+            } catch (Exception e) {
+                LOGGER.error(e, "failed to stop cloudflared client proxy during cleanup");
+            }
+        }
+
+         activeProxyProcesses.clear();
+         activeProxies.clear();
+    }
+
     public static int getOrCreateClientProxy(String host) {
         if (!cloudflaredAvailable) {
             LOGGER.error("cannot create cloudflared client proxy for host {} because cloudflared is not available.", host);
-            return 25565;
+            throw new IllegalStateException(
+                    "cloudflared is not available; cannot create client proxy for host: " + host
+            );
         }
+
+        ensureProxyCapacity();
 
         return activeProxies.computeIfAbsent(host, targetHost -> {
             try (ServerSocket s = new ServerSocket(0)) {

@@ -45,7 +45,7 @@ public class CommandE4mc extends CommandBase {
                 }
                 break;
             case "restart":
-                if ((E4mcClient.session != null) && (E4mcClient.session.getState() != E4mcSession.State.STARTED)) {
+                if ((E4mcClient.session != null) && (E4mcClient.session.getState() == E4mcSession.State.STARTED)) {
                     E4mcClient.session.stop();
                     E4mcClient.startHostSession();
                 } else {
