@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0
+
+- **Added** new backend implementation for connections using cloudflared.
+
 ## 1.0.2
 
 - **Added** a new configuration option: `useInsecureTLS`
