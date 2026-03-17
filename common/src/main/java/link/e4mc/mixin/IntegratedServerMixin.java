@@ -1,7 +1,6 @@
 package link.e4mc.mixin;
 
 import link.e4mc.E4mcClient;
-import link.e4mc.QuiclimeSession;
 import net.minecraft.server.integrated.IntegratedServer;
 import net.minecraft.server.integrated.IntegratedServerListenThread;
 import net.minecraft.world.EnumGameType;
@@ -19,8 +18,7 @@ public abstract class IntegratedServerMixin {
     @Inject(method = "shareToLAN", at = @At("RETURN"))
     public void shareToLAN(EnumGameType gameType, boolean allowedCommandsForEveryone, CallbackInfoReturnable<String> cir) {
         E4mcClient.localRelayPort = Integer.parseInt(this.theServerListeningThread.func_71755_c());
-        E4mcClient.session = new QuiclimeSession();
-        E4mcClient.session.startAsync();
+        E4mcClient.startHostSession();
 
         E4mcClient.LOGGER.info("e4mc local TCP relay listening on " + E4mcClient.localRelayPort);
     }

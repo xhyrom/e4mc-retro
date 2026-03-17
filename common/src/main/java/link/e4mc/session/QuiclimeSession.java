@@ -22,7 +22,7 @@
  * SOFTWARE.
  */
 
-package link.e4mc;
+package link.e4mc.session;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
@@ -51,12 +51,15 @@ import java.util.function.Consumer;
 import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLException;
+
+import link.e4mc.Config;
+import link.e4mc.E4mcClient;
 import link.e4mc.platform.Services;
 import link.e4mc.util.SSLUtil;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.resources.I18n;
 
-public class QuiclimeSession {
+public class QuiclimeSession implements E4mcSession {
 
     private static final Gson gson = new Gson();
 
@@ -309,14 +312,6 @@ public class QuiclimeSession {
     }
 
     public State state = State.STARTING;
-
-    public enum State {
-        STARTING,
-        STARTED,
-        UNHEALTHY,
-        STOPPING,
-        STOPPED,
-    }
 
     private static class BrokerResponse {
 
@@ -711,5 +706,10 @@ public class QuiclimeSession {
                     .addListener(c -> state = State.STOPPED);
             })
         );
+    }
+
+    @Override
+    public E4mcSession.State getState() {
+        return state;
     }
 }

@@ -1,7 +1,7 @@
 package link.e4mc.command;
 
 import link.e4mc.E4mcClient;
-import link.e4mc.QuiclimeSession;
+import link.e4mc.session.E4mcSession;
 import net.minecraft.client.Minecraft;
 import net.minecraft.command.CommandBase;
 import net.minecraft.command.CommandException;
@@ -37,7 +37,7 @@ public class CommandE4mc extends CommandBase {
                 Minecraft.getMinecraft().getIntegratedServer().setOnlineMode(false);
                 break;
             case "stop":
-                if ((E4mcClient.session != null) && (E4mcClient.session.state != QuiclimeSession.State.STOPPED)) {
+                if ((E4mcClient.session != null) && (E4mcClient.session.getState() != E4mcSession.State.STOPPED)) {
                     E4mcClient.session.stop();
                     sender.sendChatToPlayer(ChatMessageComponent.createFromTranslationKey("text.e4mc_minecraft.closeServer"));
                 } else {
@@ -45,10 +45,9 @@ public class CommandE4mc extends CommandBase {
                 }
                 break;
             case "restart":
-                if ((E4mcClient.session != null) && (E4mcClient.session.state != QuiclimeSession.State.STARTED)) {
+                if ((E4mcClient.session != null) && (E4mcClient.session.getState() == E4mcSession.State.STARTED)) {
                     E4mcClient.session.stop();
-                    E4mcClient.session = new QuiclimeSession();
-                    E4mcClient.session.startAsync();
+                    E4mcClient.startHostSession();
                 } else {
                     sender.sendChatToPlayer(ChatMessageComponent.createFromTranslationKey("text.e4mc_minecraft.serverAlreadyClosed"));
                 }

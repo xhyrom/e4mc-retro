@@ -11,6 +11,9 @@
     "IntegratedServerMixin",
     "netty.NativeLibraryLoaderMixin"
   ],
+  "client": [
+    "ServerAddressMixin"
+  ],
   "injectors": {
     "defaultRequire": 1
   }

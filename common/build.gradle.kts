@@ -37,6 +37,9 @@ dependencies {
     implementation(project(":neth", configuration = "archives"))
     shadowBundle(project(":neth", configuration = "archives"))
 
+    implementation(project(":cloudflared"))
+    shadowBundle(project(":cloudflared"))
+
     compileOnly("org.spongepowered:mixin:0.7.11-SNAPSHOT")
 }
 

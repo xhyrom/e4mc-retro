@@ -23,6 +23,7 @@ rootProject.name = "e4mc-retro"
 
 sequenceOf(
     "neth",
+    "cloudflared",
     "common",
     "fabric",
     "forge",
