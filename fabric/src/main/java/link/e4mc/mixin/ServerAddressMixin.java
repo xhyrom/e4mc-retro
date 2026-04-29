@@ -13,6 +13,10 @@ public class ServerAddressMixin {
         if (addrString != null && addrString.startsWith("cloudflared://")) {
             String targetHost = addrString.substring("cloudflared://".length()).trim();
 
+            if (targetHost.isEmpty()) {
+                return addrString;
+            }
+
             int localPort = E4mcClient.getOrCreateClientProxy(targetHost);
             return "127.0.0.1:" + localPort;
         }
