@@ -71,6 +71,22 @@ public class CloudflaredWrapper {
         return sb.toString();
     }
 
+    private static String sha256Of(File file) throws IOException {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            try (InputStream in = new BufferedInputStream(Files.newInputStream(file.toPath()))) {
+                byte[] buffer = new byte[8192];
+                int read;
+                while ((read = in.read(buffer)) != -1) {
+                    digest.update(buffer, 0, read);
+                }
+            }
+            return bytesToHex(digest.digest());
+        } catch (NoSuchAlgorithmException e) {
+            throw new IOException("SHA-256 algorithm not available", e);
+        }
+    }
+
     public static void init() throws Exception {
         if (binaryFile != null && binaryFile.exists() && binaryFile.canExecute()) return;
 
@@ -132,42 +148,55 @@ public class CloudflaredWrapper {
         }
 
         String downloadUrl = "https://github.com/cloudflare/cloudflared/releases/download/" + CLOUDFLARED_VERSION + "/" + assetName;
-        File downloadDest = isMac ? new File(binDir, assetName) : binaryFile;
 
         Path tempFile = Files.createTempFile("cloudflared-" + CLOUDFLARED_VERSION + "-", ".tmp");
-        try (InputStream in = new BufferedInputStream(new URL(downloadUrl).openStream());
-             OutputStream out = new BufferedOutputStream(Files.newOutputStream(tempFile, StandardOpenOption.TRUNCATE_EXISTING))) {
+        try {
             MessageDigest digest;
             try {
                 digest = MessageDigest.getInstance("SHA-256");
             } catch (NoSuchAlgorithmException e) {
                 throw new IOException("SHA-256 algorithm not available", e);
             }
-            byte[] buffer = new byte[8192];
-            int read;
-            while ((read = in.read(buffer)) != -1) {
-                digest.update(buffer, 0, read);
-                out.write(buffer, 0, read);
-            }
-            out.flush();
-            String actualSha256 = bytesToHex(digest.digest());
-
-            if (!actualSha256.equalsIgnoreCase(expectedSha256)) {
-                Files.deleteIfExists(tempFile);
-                throw new IOException("cloudflared binary checksum verification failed. Expected " + expectedSha256
-                        + " but got " + actualSha256);
+            try (InputStream in = new BufferedInputStream(new URL(downloadUrl).openStream());
+                 OutputStream out = new BufferedOutputStream(Files.newOutputStream(tempFile, StandardOpenOption.TRUNCATE_EXISTING))) {
+                byte[] buffer = new byte[8192];
+                int read;
+                while ((read = in.read(buffer)) != -1) {
+                    digest.update(buffer, 0, read);
+                    out.write(buffer, 0, read);
+                }
             }
 
-            Files.move(tempFile, downloadDest.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+            if (isMac) {
+                // The checksums published in the release notes are for the extracted
+                // binary, not the .tgz archive, so verify after extraction.
+                File tgzFile = new File(binDir, assetName);
+                Files.move(tempFile, tgzFile.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+                Process tarProcess = new ProcessBuilder("tar", "-xzf", tgzFile.getAbsolutePath(), "-C", binDir.getAbsolutePath()).start();
+                int tarExitCode = tarProcess.waitFor();
+                tgzFile.delete();
+                if (tarExitCode != 0) {
+                    throw new IOException("Failed to extract cloudflared archive");
+                }
+
+                String actualSha256 = sha256Of(binaryFile);
+                if (!actualSha256.equalsIgnoreCase(expectedSha256)) {
+                    binaryFile.delete();
+                    throw new IOException("cloudflared binary checksum verification failed. Expected " + expectedSha256
+                            + " but got " + actualSha256);
+                }
+            } else {
+                String actualSha256 = bytesToHex(digest.digest());
+                if (!actualSha256.equalsIgnoreCase(expectedSha256)) {
+                    Files.deleteIfExists(tempFile);
+                    throw new IOException("cloudflared binary checksum verification failed. Expected " + expectedSha256
+                            + " but got " + actualSha256);
+                }
+                Files.move(tempFile, binaryFile.toPath(), StandardCopyOption.REPLACE_EXISTING, StandardCopyOption.ATOMIC_MOVE);
+            }
         } catch (IOException e) {
             Files.deleteIfExists(tempFile);
             throw e;
-        }
-
-        if (isMac) {
-            Process tarProcess = new ProcessBuilder("tar", "-xzf", downloadDest.getAbsolutePath(), "-C", binDir.getAbsolutePath()).start();
-            tarProcess.waitFor();
-            downloadDest.delete();
         }
 
         binaryFile.setExecutable(true);
